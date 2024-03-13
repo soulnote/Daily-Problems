@@ -1,25 +1,15 @@
 class Solution {
-    public String interpret(String command) {
-        String ans = "";
-        char last ='(';
-        for(int i=0;i<command.length();i++){
-            char ch = command.charAt(i);
-            if(ch == '('){
-                char ch2 = command.charAt(i+1);
-                if(ch2==')') {
-                    ans+= "o";
-                    i+=1;
-                }
-                else{
-                    ans+= "al";
-                    i+=3;
-                }
+    public String interpret(String s) {
+        StringBuilder ans = new StringBuilder();
+        for(int i = 0 ; i < s.length() ; i++){
+            if(s.charAt(i) == 'G'){
+                ans.append(s.charAt(i));
+            }else if(s.charAt(i) == '(' && s.charAt(i+1) == ')'){
+                ans.append("o");
+            }else if(s.charAt(i) == '(' && s.charAt(i+1) == 'a'){
+                ans.append("al");
             }
-            else{
-                ans+="G";
-            }
-            
         }
-        return ans;
+        return ans.toString();
     }
 }
