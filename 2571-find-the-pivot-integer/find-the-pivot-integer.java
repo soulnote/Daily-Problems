@@ -14,12 +14,7 @@ class Solution {
                 right--;
                 rightsum += right;
             }
-            // else{
-            //     right--;
-            //     left++;
-            //     leftsum+=left;
-            //     rightsum+=right;
-            // }
+           
         } 
         return -1;
     }
