@@ -11,7 +11,7 @@ class Solution {
         List<Integer> result=new ArrayList<>();
         PriorityQueue<Pair> pq=new PriorityQueue<>(new Comparator<Pair>(){
             public int compare(Pair p1,Pair p2){
-                if(p2.diff==p1.diff) return p2.val-p1.val;
+                if(p2.diff == p1.diff) return p2.val-p1.val;
                 return p2.diff-p1.diff;
             }
         });
