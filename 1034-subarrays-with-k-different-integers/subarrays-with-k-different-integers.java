@@ -1,6 +1,6 @@
 class Solution {
     
-    public int countOfSubArray(int[] nums, int k){
+    public int countOfSubArrayWithAtMostKDistinct(int[] nums, int k){
         int n = nums.length, left = 0 , right = 0, count = 0;
         HashMap<Integer, Integer> numFreq = new HashMap<>();
         for(; right<n; right++){
@@ -18,6 +18,6 @@ class Solution {
 
 
     public int subarraysWithKDistinct(int[] nums, int k) {
-        return countOfSubArray(nums,k)-countOfSubArray(nums,k-1);
+        return countOfSubArrayWithAtMostKDistinct(nums,k)-countOfSubArrayWithAtMostKDistinct(nums,k-1);
     }
 }
