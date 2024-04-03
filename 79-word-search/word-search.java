@@ -1,7 +1,6 @@
 class Solution {
     public boolean exist(char[][] board, String word) {
         int m=board.length,n=board[0].length;
-        // int [][]visited = new int[m][n];
         if(word.length()>m*n) return false;
 
         for(int i=0;i<m;i++){
@@ -20,6 +19,7 @@ class Solution {
         if(row>=board.length || row<0 || col<0 || col>=board[0].length || board[row][col]!=word.charAt(idx)){
             return false;
         }
+        if(board[row][col]=='1')return false;
 
         board[row][col] = '1';
         int[] r = {-1, 1, 0, 0};
