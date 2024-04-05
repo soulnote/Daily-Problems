@@ -1,19 +1,17 @@
-import java.util.HashMap;
-
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        int idx = 0;
+        int longest =0;
         HashMap<Character,Integer> map = new HashMap<>();
-        int max = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            if (map.containsKey(ch)) {
-                // Update idx to the index after the last occurrence of ch
-                idx = Math.max(map.get(ch) + 1, idx);
+        int left =0, right=0;
+        while(right<s.length()){
+            char ch = s.charAt(right);
+            if(map.containsKey(ch)){
+                left = Math.max(left, map.get(ch)+1);
             }
-            map.put(ch, i);
-            max = Math.max(i - idx + 1, max);
+            map.put(ch,right);
+            longest= Math.max(right-left+1,longest);
+            right++;
         }
-        return max;
+        return longest;
     }
 }
