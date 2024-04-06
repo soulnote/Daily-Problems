@@ -4,8 +4,6 @@ class Solution {
         int n2 = s2.length();
         if(n1>n2) return false;
         int []fqArr1 = new int[26];
-        // char[] s1Arr = s1.toCharArray();
-        // Arrays.sort(s1Arr);
         for(int i=0;i<n1;i++){
             fqArr1[s1.charAt(i)-'a']++;
         }
