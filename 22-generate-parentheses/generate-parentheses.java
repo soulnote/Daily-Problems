@@ -1,27 +1,20 @@
 class Solution {
     public List<String> generateParenthesis(int n) {
         List<String> ans = new ArrayList<>();
-        generate("", 2*n, ans);
+        generate("", n, n, ans);
         return ans;
     }
-    public void generate(String str, int n, List<String> ans){
-        if(str.length()==n){
-            if(isValid(str))ans.add(str);
+
+    public void generate(String str, int open, int close, List<String> ans) {
+        if (open == 0 && close == 0) {
+            ans.add(str);
             return;
         }
-        generate(str+"(", n, ans);
-        generate(str+")", n, ans);
-    }
-    public boolean isValid(String str){
-        int count=0;
-        for(char ch: str.toCharArray()){
-            if(ch=='(')count++;
-            else{
-                if(count>0)count--;
-                else return false;
-            }
+        if (open > 0) {
+            generate(str + "(", open - 1, close, ans);
         }
-        if(count==0)return true;
-        return false;
+        if (close > open) {
+            generate(str + ")", open, close - 1, ans);
+        }
     }
 }
