@@ -9,7 +9,7 @@ class Solution {
             int ch = s.charAt(right)-'A';
             fqArr[ch]++;
             maxfq = Math.max(maxfq, fqArr[ch]);
-            while(left<right && right-left+1-maxfq>k){
+            while(left<=right && right-left+1-maxfq>k){
                 fqArr[s.charAt(left)-'A']--;
                 left++;
                 maxfq = 0;
