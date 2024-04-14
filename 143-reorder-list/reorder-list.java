@@ -20,7 +20,7 @@ class Solution {
         slow.next = null;
         ListNode head2 = reverse(fast);
         ListNode headnew = head;
-        while(head!=null && head2!=null){
+        while(head2!=null){
             ListNode nextofhead = head.next;
             ListNode nextofhead2 = head2.next;
             head.next= head2;
