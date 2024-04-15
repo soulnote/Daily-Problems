@@ -14,7 +14,6 @@
  * }
  */
 class Solution {
-    static int ans =0;
     public int sumNumbers(TreeNode root) {
         return helper(root,0);
     }
@@ -24,7 +23,7 @@ class Solution {
         ans*=10;
         ans+=root.val;
         if(root.left==null && root.right==null){
-            // System.out.println(root.val + " : " + ans);
+            System.out.println(root.val + " : " + ans);
             // ans+=ssf;
             return ans;
         }
