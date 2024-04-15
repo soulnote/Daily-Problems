@@ -23,11 +23,11 @@ class Solution {
         ans*=10;
         ans+=root.val;
         if(root.left==null && root.right==null){
-            System.out.println(root.val + " : " + ans);
-            // ans+=ssf;
             return ans;
         }
-        return helper(root.left,ans)+helper(root.right,ans);
+        int right = helper(root.right,ans);
+        int left = helper(root.left,ans);
+        return left+right;
     }
    
 }
