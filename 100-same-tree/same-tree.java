@@ -23,14 +23,11 @@ class Solution {
         if(p==null&& q==null){
             return;
         }
-        if(p==null && q!=null){
+        if(p==null || q==null){
             ans = false;
             return ;
         }
-        if(p!=null && q==null){
-            ans = false;
-            return ;
-        }
+     
         if(p.val!=q.val)ans = false;
         solve(p.left,q.left);
         solve(p.right,q.right);
