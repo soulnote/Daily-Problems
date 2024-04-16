@@ -14,22 +14,10 @@
  * }
  */
 class Solution {
-    boolean ans = true;
     public boolean isSameTree(TreeNode p, TreeNode q) {
-      solve(p,q);
-      return ans;
-    }
-    public void solve(TreeNode p, TreeNode q){
-        if(p==null&& q==null){
-            return;
-        }
-        if(p==null || q==null){
-            ans = false;
-            return ;
-        }
-     
-        if(p.val!=q.val)ans = false;
-        solve(p.left,q.left);
-        solve(p.right,q.right);
+        if(p==null && q==null)return true;
+        if(p==null || q==null)return false;
+        if(p.val==q.val && isSameTree(p.left,q.left)&&isSameTree(p.right,q.right))return true;
+        else return false;
     }
 }
