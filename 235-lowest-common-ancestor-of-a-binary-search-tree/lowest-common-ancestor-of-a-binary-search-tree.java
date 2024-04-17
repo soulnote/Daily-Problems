@@ -14,13 +14,7 @@ class Solution {
         ArrayList<TreeNode> listQ = new ArrayList<>();
         helper(root,p,listP);
         helper(root,q,listQ);
-        for(TreeNode t:listP){
-            System.out.print(t.val);
-        }
-        System.out.println();
-        for(TreeNode t:listQ){
-            System.out.print(t.val);
-        }
+       
         int n = Math.min(listP.size(),listQ.size());
         int i=0;
         for(;i<n;i++){
