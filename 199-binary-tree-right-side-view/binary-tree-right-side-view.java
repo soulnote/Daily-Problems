@@ -23,15 +23,13 @@ class Solution {
         q.offer(root);
         while(!q.isEmpty()){
             int size = q.size();
-            if(q.size()>=1)ans.add(q.peek().val);
             for(int i=0;i<size;i++){
                 TreeNode t = q.poll();
+                if(i==0)ans.add(t.val);
                 if(t==null)continue;
-                // list.add(t.val);
                 if(t.right!=null)q.offer(t.right);
                 if(t.left!=null)q.offer(t.left);
             }
-            // ans.add(list.getLast());
         }
         return ans;
     }
