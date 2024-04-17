@@ -10,28 +10,16 @@
 
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        ArrayList<TreeNode> listP = new ArrayList<>();
-        ArrayList<TreeNode> listQ = new ArrayList<>();
-        helper(root,p,listP);
-        helper(root,q,listQ);
-       
-        int n = Math.min(listP.size(),listQ.size());
-        int i=0;
-        for(;i<n;i++){
-            if(listP.get(i)==null || listP.get(i).val!=listQ.get(i).val){
-                break;
-            }
-        }
-        return listP.get(i-1);
+        return p.val < q.val ? findCommonAncestor(root, p, q) : findCommonAncestor(root, q, p);
     }
-    public void helper(TreeNode root, TreeNode p,ArrayList<TreeNode> list){
-        if(root==null)return ;
-        list.add(root);
-        if(root.val==p.val)return;
-        if(root.val<p.val){
-            helper(root.right,p,list);
-        }
-        else helper(root.left,p,list);
-        
+
+ 
+    private TreeNode findCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+
+        // if p and q are in two different branches that means root is the common ancestor
+        if (p.val <= root.val && root.val <= q.val) return root;
+
+        // p and q are in the same branch so we just need to find if p (or q) is in the left or right branch
+        return findCommonAncestor(p.val < root.val ? root.left : root.right, p, q);
     }
 }
