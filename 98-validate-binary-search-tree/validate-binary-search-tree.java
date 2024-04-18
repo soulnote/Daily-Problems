@@ -19,8 +19,9 @@ class Solution {
     }
     public boolean helper(TreeNode root, long low, long high){
         if(root==null)return true;
+        if (root.val >= high || root.val <= low) return false;
         boolean leftBalanced = helper(root.left, low, root.val);
         boolean rightBalanced = helper(root.right , root.val, high);
-        return leftBalanced && rightBalanced && root.val>low && root.val<high;
+        return leftBalanced && rightBalanced;
     }
 }
