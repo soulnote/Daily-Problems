@@ -1,48 +1,47 @@
 class Solution {
     public String minWindow(String s, String t) {
-        if (s == null || t == null || s.length() == 0 || t.length() == 0) {
-            return "";
-        }
-
+        if (s.length() < t.length()) return ""; // If s is shorter than t, there can't be a valid window
+        
+        // Initialize a hashmap to store the frequency of characters in t
         Map<Character, Integer> targetMap = new HashMap<>();
         for (char c : t.toCharArray()) {
             targetMap.put(c, targetMap.getOrDefault(c, 0) + 1);
         }
-
+        
         int left = 0, right = 0;
-        int minLen = Integer.MAX_VALUE;
-        int minStart = 0;
-        int requiredChars = t.length();
-
+        int minWindowLength = Integer.MAX_VALUE;
+        int minWindowStart = 0;
+        int requiredChars = targetMap.size(); // Number of unique characters in t
+        int formedChars = 0; // Number of characters in s that match those in t
+        Map<Character, Integer> windowMap = new HashMap<>(); // Map to store the frequency of characters in the current window
+        
         while (right < s.length()) {
             char currentChar = s.charAt(right);
-            if (targetMap.containsKey(currentChar)) {
-                if (targetMap.get(currentChar) > 0) {
-                    requiredChars--;
-                }
-                targetMap.put(currentChar, targetMap.get(currentChar) - 1);
+            windowMap.put(currentChar, windowMap.getOrDefault(currentChar, 0) + 1);
+            // If the current character matches one in t and its frequency in the window equals its frequency in t, increment formedChars
+            if (targetMap.containsKey(currentChar) && windowMap.get(currentChar).intValue() == targetMap.get(currentChar).intValue()) {
+                formedChars++;
             }
-
-            while (requiredChars == 0) {
-                if (right - left + 1 < minLen) {
-                    minLen = right - left + 1;
-                    minStart = left;
+            
+            // If all characters in t are found in the current window, try shrinking the window from the left
+            while (left <= right && formedChars == requiredChars) {
+                // Update the minimum window length and start index if the current window is smaller
+                if (right - left + 1 < minWindowLength) {
+                    minWindowLength = right - left + 1;
+                    minWindowStart = left;
                 }
-
                 char leftChar = s.charAt(left);
-                if (targetMap.containsKey(leftChar)) {
-                    targetMap.put(leftChar, targetMap.get(leftChar) + 1);
-                    if (targetMap.get(leftChar) > 0) {
-                        requiredChars++;
-                    }
+                windowMap.put(leftChar, windowMap.get(leftChar) - 1);
+                // If the frequency of leftChar becomes less than required, decrement formedChars
+                if (targetMap.containsKey(leftChar) && windowMap.get(leftChar).intValue() < targetMap.get(leftChar).intValue()) {
+                    formedChars--;
                 }
-
-                left++;
+                left++; // Shrink the window from the left
             }
-
-            right++;
+            
+            right++; // Expand the window to the right
         }
-
-        return (minLen == Integer.MAX_VALUE) ? "" : s.substring(minStart, minStart + minLen);
+        
+        return minWindowLength == Integer.MAX_VALUE ? "" : s.substring(minWindowStart, minWindowStart + minWindowLength);
     }
 }
