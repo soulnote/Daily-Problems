@@ -1,17 +1,19 @@
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        int longest =0;
-        HashMap<Character,Integer> map = new HashMap<>();
-        int left =0, right=0;
-        while(right<s.length()){
-            char ch = s.charAt(right);
-            if(map.containsKey(ch)){
-                left = Math.max(left, map.get(ch)+1);
-            }
-            map.put(ch,right);
-            longest= Math.max(right-left+1,longest);
-            right++;
+        int n = s.length();
+        int maxLength = 0;
+        int[] charIndex = new int[128]; // Assuming ASCII characters
+        
+        for (int i = 0, j = 0; j < n; j++) {
+            char currentChar = s.charAt(j);
+            // Update the start of the window if the character is already seen and its index is greater than or equal to the start of the current window
+            i = Math.max(charIndex[currentChar], i);
+            // Update the maximum length if needed
+            maxLength = Math.max(maxLength, j - i + 1);
+            // Store the index of the next character
+            charIndex[currentChar] = j + 1;
         }
-        return longest;
+        
+        return maxLength;
     }
 }
