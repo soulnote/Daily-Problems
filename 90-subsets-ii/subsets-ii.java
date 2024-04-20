@@ -1,12 +1,12 @@
 class Solution {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        List<List<Integer>> ans = new ArrayList<>();
+        HashSet<List<Integer>> ans = new HashSet<>();
         List<Integer> list = new ArrayList<>();
         Arrays.sort(nums);
         solve(0,nums,list,ans);
-        return ans; 
+        return new ArrayList<>(ans); 
     }
-    public void solve(int idx,int[]nums,List<Integer>list, List<List<Integer>> ans){
+    public void solve(int idx,int[]nums,List<Integer>list, HashSet<List<Integer>> ans){
         if(idx==nums.length){
             if(!ans.contains(list)){
                 ans.add(new ArrayList<>(list));
