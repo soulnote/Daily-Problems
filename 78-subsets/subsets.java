@@ -11,10 +11,9 @@ class Solution {
             return;
         }
         
-        System.out.println(list);
         solve(idx+1, nums , list);
-        list.add(nums[idx]);
-        solve(idx+1, nums,list);
-        list.remove(list.size()-1);
+        ArrayList<Integer> nlist = new ArrayList<>(list);
+        nlist.add(nums[idx]);
+        solve(idx+1, nums,nlist);
     }
 }
