@@ -1,41 +1,40 @@
 class Solution {
     public int orangesRotting(int[][] grid) {
-        if(grid.length==0 || grid==null) return 0;
-        int fresh=0,rotten = 0;
+        int fresh = 0,rotten =0;
         Queue<int[]> q = new LinkedList<>();
         for(int i=0;i<grid.length;i++){
             for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]==1)fresh++;
                 if(grid[i][j]==2){
-                    q.add(new int[]{i,j});
+                    q.offer(new int[]{i,j});
                     rotten++;
-                }
-                if(grid[i][j]==1){
-                    fresh++;
                 }
             }
         }
-        if(fresh==0) return 0;
-        int count=0;
-        int[] dx =new int[] {0,0,1,-1};
-        int[] dy = new int[] {1,-1,0,0};
-        while(q.size()>0){
-            int size = q.size();
-            for(int i=0;i<size;i++){
-                int[] rotpoint = q.poll();
-                for(int j=0;j<4;j++){
-                    int x = rotpoint[0]+dx[j];
-                    int y = rotpoint[1]+dy[j];
-                    if(x>=0 && y>=0 && x<grid.length && y<grid[0].length && grid[x][y]==1){
-                        grid[x][y]=2;
-                        q.add(new int[]{x,y});
+        if(rotten==0 && fresh==0) return 0;
+        int time =0;
+        int[]dRow = new int[]{0,0,1,-1};
+        int[]dCol = new int[]{1,-1,0,0};
+        while(!q.isEmpty()){
+            int s = q.size();
+            for(int i = 0; i<s; i++){
+                int[]top = q.poll();
+                int row = top[0];
+                int col = top[1];
+                for(int k=0;k<4;k++){
+                    int nRow = row + dRow[k];
+                    int nCol = col + dCol[k];
+                    if(nRow>=0 && nCol>=0 && nRow<grid.length && nCol<grid[0].length && grid[nRow][nCol]==1){
+                        grid[nRow][nCol]=2;
                         fresh--;
+                        q.offer(new int[]{nRow,nCol});
                     }
                 }
             }
-            if(q.size()!=0)count++;
+            time++; 
         }
-        if(fresh!=0) return -1;
-        return count;
-
+        if(fresh!=0)return -1;
+        
+        return time-1;
     }
 }
