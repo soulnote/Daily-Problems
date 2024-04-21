@@ -1,30 +1,37 @@
 class Solution {
     public int numIslands(char[][] grid) {
-        int m = grid.length,n=grid[0].length;
-        boolean [][]visited = new boolean[m][n];
-        int count = 0;
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(visited[i][j]==false && grid[i][j]=='1'){
-                    solve(i,j,grid,visited);
+        int count =0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]=='1'){
+                    bfs(i,j,grid);
                     count++;
                 }
             }
         }
         return count;
     }
-    public void solve(int i, int j, char[][]grid, boolean[][]visited){
-        if(i<0||i>=grid.length||j<0||j>=grid[0].length)return;
-        if(grid[i][j]=='0'||visited[i][j]==true)return;
-
-        visited[i][j]=true;
-        int[]r = new int[]{0,0,1,-1};
-        int[]c = new int[]{1,-1,0,0};
+    int[]dRow = new int[]{0,0,1,-1};
+    int[]dCol = new int[]{1,-1,0,0};
+    public void bfs(int row,int col, char[][]grid){
+         
         
-        for(int k=0;k<4;k++){
-            int row = i+r[k];
-            int col = j+c[k];
-            solve(row,col,grid,visited);
+        Queue<int[]> q= new LinkedList<>();
+        q.offer(new int[]{row,col});
+        grid[row][col]='0';
+        
+
+
+        while(!q.isEmpty()){
+            int[]t= q.poll();
+            for(int i=0;i<4;i++){
+                int nRow = t[0]+dRow[i];
+                int nCol = t[1]+dCol[i];
+                if(nRow>=0 && nRow<grid.length && nCol>=0 && nCol<grid[0].length && grid[nRow][nCol]=='1'){
+                    grid[nRow][nCol]='0';
+                    q.offer(new int[] {nRow, nCol});
+                }
+            }
         }
     }
 }
