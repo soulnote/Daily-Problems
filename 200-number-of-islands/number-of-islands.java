@@ -20,8 +20,6 @@ class Solution {
         q.offer(new int[]{row,col});
         grid[row][col]='0';
         
-
-
         while(!q.isEmpty()){
             int[]t= q.poll();
             for(int i=0;i<4;i++){
