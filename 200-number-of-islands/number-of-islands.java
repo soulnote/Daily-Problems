@@ -15,11 +15,12 @@ class Solution {
     }
     public void solve(int i, int j, char[][]grid, boolean[][]visited){
         if(i<0||i>=grid.length||j<0||j>=grid[0].length)return;
-        if(grid[i][j]=='0')return;
-        if(visited[i][j]==true)return;
+        if(grid[i][j]=='0'||visited[i][j]==true)return;
+
+        visited[i][j]=true;
         int[]r = new int[]{0,0,1,-1};
         int[]c = new int[]{1,-1,0,0};
-        visited[i][j]=true;
+        
         for(int k=0;k<4;k++){
             int row = i+r[k];
             int col = j+c[k];
