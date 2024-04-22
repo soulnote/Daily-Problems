@@ -12,7 +12,7 @@ class Solution {
             adj.get(prerequisites[i][1]).add(prerequisites[i][0]);
         }
         boolean ans = true;
-        int[] vis = new int[n]; 
+        int[] vis = new int[n]; // Mark nodes as unvisited (0), visiting (1), or visited (2)
         for (int i = 0; i < n; i++) {
             if (vis[i] == 0) {
                 isCycle = false;
@@ -41,6 +41,6 @@ class Solution {
             }
         }
 
-        vis[src] = 2; 
+        vis[src] = 2; //mark as visited
     }
 }
