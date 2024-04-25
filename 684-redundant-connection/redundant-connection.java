@@ -28,7 +28,6 @@ class Solution {
             if(!u.makeFriend(item[0],item[1]))
                 return item;
         }
-
         return null;
     }
 }
