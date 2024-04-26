@@ -1,17 +1,30 @@
 class Solution {
     public int longestIdealString(String s, int k) {
-        int[] dp = new int[26];
-        int ans=1;
-        for(int i=0;i<s.length();i++){
-            int ele = s.charAt(i) - 'a';
-            for(int j=ele;j>=0 && j>=ele-k;j--){
-                dp[ele] = Math.max(dp[ele],dp[j]+1);
-            }
-            for(int j=ele+1;j<26 && j<=ele+k;j++){
-                dp[ele] = Math.max(dp[ele],dp[j]+1);
-            }
-            ans = Math.max(ans,dp[ele]);
+        int n = s.length();
+        int[][] dp = new int[n+2][300];
+        for(int[] num : dp){
+            Arrays.fill(num, -1);
         }
-        return ans;
+        return 1+helper('*', 0, s, k, dp);
+    }
+
+    int helper(char prevChar, int currIdx, String s, int k, int[][] dp){
+        //base case
+        if(currIdx==s.length()) return 0;
+        
+        if(dp[currIdx][prevChar]!=-1) return dp[currIdx][prevChar];
+
+        //special case
+        if(prevChar=='*') return dp[currIdx][prevChar] =  Math.max(helper(prevChar, currIdx+1, s, k, dp), helper(s.charAt(currIdx), currIdx+1, s, k, dp));
+
+
+        //recursive
+        int ans = 0;
+        // consider curr index
+        if(Math.abs(prevChar-s.charAt(currIdx))<=k ) ans = 1+ helper(s.charAt(currIdx), currIdx+1, s, k, dp);
+        // not consider current idx 
+        ans = Math.max(ans, helper(prevChar, currIdx+1, s, k, dp));
+
+        return dp[currIdx][prevChar] = ans;
     }
 }
