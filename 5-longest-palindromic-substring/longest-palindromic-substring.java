@@ -3,7 +3,7 @@ class Solution {
         int n = str.length();
         int ans = 1;
         int beg = 0;
-        for(int current=0; current<n-1; current++){
+        for(int current=0; current<n; current++){
             
             //odd
             int l = current-1, r=current+1;
