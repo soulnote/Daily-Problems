@@ -9,7 +9,6 @@ class Solution {
 
         for(int i=0; i<32; i++){
             int mask = 1<<i;
-            int oneBitCount = 0;
             
             if((xorSum & mask) != (k & mask)){
                 flipCount++;
