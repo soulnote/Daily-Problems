@@ -2,26 +2,25 @@ class Solution {
     public int maxProfit(int[] prices) {
         int n = prices.length;
         if(n==1)return 0;
-        int[][]dp = new int[n][2];
-        for(int[]num : dp){
-            Arrays.fill(num, -1);
-        }
-        return profit(prices, 0, 1, dp);
+        HashMap<String, Integer> map = new HashMap<>();
+        
+        return profit(prices, 0, true, map);
     }
-    public int profit(int[]prices, int idx, int buying, int[][]dp){
+    public int profit(int[]prices, int idx, boolean buying, HashMap<String, Integer> map){
         if(idx>= prices.length)return 0;
-
-        if(dp[idx][buying]!=-1) return dp[idx][buying];
+        String key = idx + "-" + buying;
+        if(map.containsKey(key)) return map.get(key);
         //not paticipating on that day
-        int notParticipated =  profit(prices, idx+1, buying, dp);
+        int notParticipated =  profit(prices, idx+1, buying, map);
         int participated = Integer.MIN_VALUE;
-        if(buying==1){
-            participated = profit(prices, idx+1, Math.abs(buying-1), dp) - prices[idx];
+        if(buying){
+            participated = profit(prices, idx+1, !buying, map) - prices[idx];
         }
         else{
-            participated = profit(prices, idx+2, Math.abs(buying-1), dp) + prices[idx];
+            participated = profit(prices, idx+2, !buying, map) + prices[idx];
         }
 
-        return dp[idx][buying] = Math.max(participated, notParticipated);
+        map.put(key, Math.max(participated, notParticipated));
+        return map.get(key);
     }
 }
