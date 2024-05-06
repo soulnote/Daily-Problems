@@ -27,7 +27,7 @@ class Solution {
                 left++;
             }
         }
-        if(start==-1 || len==Integer.MAX_VALUE) return "";
+        if(start==-1 ) return "";
         return s.substring(start, start+len);
     }
 }
