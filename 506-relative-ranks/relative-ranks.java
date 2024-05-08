@@ -9,20 +9,20 @@ class Solution {
         }
         
         String[]ans = new String[n];
-        int i =1;
-        while(!pq.isEmpty() && i<=3 ){
+        int rank =1;
+        while(!pq.isEmpty() && rank<=3 ){
             int val = pq.peek()[0];
             int idx = pq.peek()[1];
-            if(i==1)ans[idx] = "Gold Medal";
-            if(i==2)ans[idx] = "Silver Medal";
-            if(i==3)ans[idx] = "Bronze Medal";
+            if(rank == 1) ans[idx] = "Gold Medal";
+            if(rank == 2) ans[idx] = "Silver Medal";
+            if(rank == 3) ans[idx] = "Bronze Medal";
             pq.poll();
-            i++;
+            rank++;
         }
         while(!pq.isEmpty()){
             int[]a = pq.poll();
-            ans[a[1]] = ""+ i;
-            i++;
+            ans[a[1]] = ""+ rank;
+            rank++;
         }
         return ans;
     }
