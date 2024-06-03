@@ -1,10 +1,11 @@
 class Solution {
     public int appendCharacters(String s, String t) {
-        int minToAppend = t.length();
+        int tLen = t.length();
+        int sLen = s.length();
        
         int count = 0;
         int sPointer = 0, tPointer = 0;
-        while(tPointer<t.length() && sPointer<s.length()){
+        while(tPointer<tLen && sPointer<sLen){
             if(s.charAt(sPointer)==t.charAt(tPointer)){
                 sPointer++;
                 tPointer++;
@@ -12,8 +13,7 @@ class Solution {
             }
             else sPointer++;
         }
-        minToAppend = Math.min(t.length()-count, minToAppend);
          
-        return minToAppend;
+        return tLen - count;
     }
 }
