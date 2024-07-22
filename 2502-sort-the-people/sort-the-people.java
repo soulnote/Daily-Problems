@@ -1,16 +1,30 @@
+class Person{   // creating a custom class Person to encapsulate names with their heights
+    String name;
+    int height;
+
+    // Constructor
+    Person(String name, int height){ 
+        this.name = name;
+        this.height = height;
+    }
+}
+
 class Solution {
     public String[] sortPeople(String[] names, int[] heights) {
-        Map<Integer, String> map = new HashMap<>();
-        for (int i = 0; i < names.length; i++) {
-            map.put(heights[i], names[i]);
-        }        
-        Arrays.sort(heights);
-        String[] result = new String[heights.length];
-        int index = 0;
-        for (int i = heights.length - 1; i >= 0; i--) {
-            result[index] = map.get(heights[i]);
-            index++;
+        int n = names.length;
+        Person[] people = new Person[n];    // Array to store the People
+
+        for(int i=0;i<n;i++){
+            people[i] = new Person(names[i],heights[i]);
         }
-        return result;
+
+        Arrays.sort(people, (a,b)->{ return b.height - a.height;});
+
+        String[] ans = new String[n];  
+        for(int i=0;i<n;i++){
+            ans[i] = people[i].name;
+        }
+
+        return ans;
     }
 }
