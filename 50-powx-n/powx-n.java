@@ -1,21 +1,22 @@
 class Solution {
     public double myPow(double x, int n) {
-        double ans = 1;
-        long newn = n;//here we are taking long in place of int to prevent the overflow condition
-        if (n < 0) {
-            newn *= -1;// this can cause the overflow
+        // Handle edge case where n is Integer.MIN_VALUE safely
+        long newn = n;  // Use long to handle large negative n
+        if (newn < 0) {
+            x = 1 / x;   // Invert x when n is negative
+            newn = -newn; // Make n positive
         }
-        while(newn >0){
-            if(newn%2 == 0){
-                x = x*x;
-                newn /=2;
+
+        double ans = 1.0;
+        while (newn > 0) {
+            // If the current power is odd, multiply ans by x
+            if ((newn & 1) == 1) {  // Bitwise check for odd numbers
+                ans *= x;
             }
-            else{
-                ans = x*ans;
-                newn -= 1;
-            }
+            x *= x;  // Square x
+            newn >>= 1;  // Right shift newn (equivalent to dividing by 2)
         }
-        if(n<0) return (double)1.0/ans;
+
         return ans;
     }
 }
