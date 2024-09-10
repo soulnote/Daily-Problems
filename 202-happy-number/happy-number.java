@@ -1,6 +1,6 @@
 class Solution {
     public boolean isHappy(int n) {
-        // if(n%2==0)return false;
+        
         HashSet<Integer> set = new HashSet<>();
         while(n!=1){
             int newn = n;
