@@ -3,8 +3,8 @@ class Solution {
         int n = s.length(), m = t.length();
         if(m>n) return "";
         
-        int[] tFreq = new int[260];
-        int[] sFreq = new int[260];
+        int[] tFreq = new int[128];
+        int[] sFreq = new int[128];
         
         for(int i = 0 ; i < m; i++){
             tFreq[t.charAt(i)]++;
