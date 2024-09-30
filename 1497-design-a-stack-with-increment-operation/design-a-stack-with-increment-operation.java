@@ -1,39 +1,36 @@
 class CustomStack {
-    private int maxSize;
-    private List<Integer> stack;
-    private List<Integer> inc;
+    int[] st;  // Ye array stack ke elements store karega
+    int pos = 0;  // Yeh position track karega ki stack ka next element kahan insert hoga
     
+    // Constructor: Stack ko maxSize ke size ke sath initialize karte hain
     public CustomStack(int maxSize) {
-        this.maxSize = maxSize;
-        this.stack = new ArrayList<>();
-        this.inc = new ArrayList<>();
+        st = new int[maxSize];  // Stack ki size maxSize ka array banti hai
     }
     
+    // push method: Stack mein ek naya element top par add karta hai
     public void push(int x) {
-        if (stack.size() < maxSize) {
-            stack.add(x);
-            inc.add(0);  // Initialize increment for this element
+        if(pos < st.length) {  // Agar stack full nahi hai (position max size se chhoti hai)
+            st[pos] = x;  // Element ko current position par add karo
+            pos++;  // Position ko aage badhao, taaki next element ke liye jagah mile
         }
     }
     
+    // pop method: Stack ke top element ko nikalta hai aur return karta hai
     public int pop() {
-        if (stack.isEmpty()) {
-            return -1;
+        if(pos == 0) {  // Agar stack empty hai (position 0 hai)
+            return -1;  // -1 return karo, kyunki koi element nikalne ke liye nahi hai
         }
-        int idx = stack.size() - 1;
-        int result = stack.get(idx) + inc.get(idx);  // Apply any pending increments
-        if (idx > 0) {
-            inc.set(idx - 1, inc.get(idx - 1) + inc.get(idx));  // Propagate increment to the next element
-        }
-        stack.remove(idx);
-        inc.remove(idx);
-        return result;
+        pos--;  // Position ko ek peeche karo, taaki top element ko access kar sako
+        return st[pos];  // Stack se top element ko return karo
     }
     
+    // increment method: Stack ke bottom ke k elements ko increment karta hai
     public void increment(int k, int val) {
-        int limit = Math.min(k, stack.size()) - 1;
-        if (limit >= 0) {
-            inc.set(limit, inc.get(limit) + val);  // Add increment to the bottom k-th element
+        // limit nikalte hain: Kya k elements increment karne hain ya jitne current elements hain (pos)
+        int limit = Math.min(k, pos);  // Stack ke current size ke hisaab se limit set karo
+        for(int i = 0; i < limit; i++) {  // Bottom ke limit tak elements loop se increment karo
+            st[i] += val;  // Element ko val se increment karo
         }
     }
 }
+
