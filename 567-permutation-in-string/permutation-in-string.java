@@ -1,29 +1,53 @@
 class Solution {
     public boolean checkInclusion(String s1, String s2) {
-        int n1= s1.length();
-        int n2 = s2.length();
-        if(n1>n2) return false;
-        int []fqArr = new int[26];
-        for(int i=0;i<n1;i++){
-            fqArr[s1.charAt(i)-'a']++;
+        int len1 = s1.length(); // Length of the first string (s1)
+        int len2 = s2.length(); // Length of the second string (s2)
+
+        // If s1 is longer than s2, it's impossible for s2 to contain any permutation of s1
+        if (len1 > len2) return false;
+
+        int[] charCount = new int[26]; // Array to keep track of character frequencies
+
+        // Populate frequency array with counts from s1
+        for (int i = 0; i < len1; i++) {
+            charCount[s1.charAt(i) - 'a']++;
         }
-        for(int i=0;i<n1;i++){
-            fqArr[s2.charAt(i)-'a']--;
+
+        // Subtract the frequency of the first len1 characters in s2
+        for (int i = 0; i < len1; i++) {
+            charCount[s2.charAt(i) - 'a']--;
         }
-        if(isPresent(fqArr))return true;
-        int left = 0,right= n1;
-        while(right<n2){
-            fqArr[s2.charAt(left)-'a']++;
-            fqArr[s2.charAt(right)-'a']--;
-            if(isPresent(fqArr)) return true;
+
+        // If the initial window (first len1 characters) is a permutation, return true
+        if (allZeroes(charCount)) return true;
+
+        int left = 0; // Left pointer of the sliding window
+        int right = len1; // Right pointer of the sliding window
+
+        // Slide the window over s2
+        while (right < len2) {
+            // Add the character going out of the window (left side)
+            charCount[s2.charAt(left) - 'a']++;
+
+            // Subtract the character coming into the window (right side)
+            charCount[s2.charAt(right) - 'a']--;
+
+            // Check if the current window is a permutation of s1
+            if (allZeroes(charCount)) return true;
+
+            // Move the window to the right
             left++;
             right++;
         }
+
+        // No permutation found
         return false;
     }
-    public boolean isPresent(int[]arr){
-        for(int i=0;i<26;i++){
-            if(arr[i]!=0)return false;
+
+    // Helper method to check if all counts in the array are zero
+    public boolean allZeroes(int[] countArray) {
+        for (int count : countArray) {
+            if (count != 0) return false;
         }
         return true;
     }
