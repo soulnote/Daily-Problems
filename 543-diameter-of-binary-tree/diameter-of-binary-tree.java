@@ -21,9 +21,9 @@ class Solution {
     }
     int solve(TreeNode root){
         if(root==null)return 0;
-        int l = solve(root.left);
-        int r = solve(root.right);
-        ans = Math.max(ans,l+r);
-        return Math.max(l,r)+1;
+        int left = solve(root.left);
+        int right = solve(root.right);
+        ans = Math.max(ans,left+right);
+        return Math.max(left,right)+1;
     }
 }
