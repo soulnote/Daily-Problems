@@ -18,12 +18,12 @@ class Solution {
             rightmax[i] = max;
         }
 
-        int maxWater = 0;
+        int totalWater = 0;
         for(int i=0;i<n;i++){
             int water = Math.min(leftmax[i],rightmax[i]) - height[i];
-            System.out.println(water);
-            if(water>0) maxWater += water;
+            // System.out.println(water);
+            if(water>0) totalWater += water;
         }
-        return maxWater;
+        return totalWater;
     }
 }
