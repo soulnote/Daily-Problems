@@ -1,54 +1,32 @@
 class Solution {
     public boolean checkInclusion(String s1, String s2) {
-        int len1 = s1.length(); // Length of the first string (s1)
-        int len2 = s2.length(); // Length of the second string (s2)
-
-        // If s1 is longer than s2, it's impossible for s2 to contain any permutation of s1
-        if (len1 > len2) return false;
-
-        int[] charCount = new int[26]; // Array to keep track of character frequencies
-
-        // Populate frequency array with counts from s1
-        for (int i = 0; i < len1; i++) {
-            charCount[s1.charAt(i) - 'a']++;
+        if (s1.length() > s2.length()) return false;
+        
+        // Character frequency arrays for both s1 and the current window of s2
+        int[] s1Freq = new int[26];
+        int[] windowFreq = new int[26];
+        
+        // Fill the frequency array for s1
+        for (int i = 0; i < s1.length(); i++) {
+            s1Freq[s1.charAt(i) - 'a']++;
+            windowFreq[s2.charAt(i) - 'a']++;
         }
-
-        // Subtract the frequency of the first len1 characters in s2
-        for (int i = 0; i < len1; i++) {
-            charCount[s2.charAt(i) - 'a']--;
+        
+        // Sliding window approach, start comparing after the first window
+        for (int i = s1.length(); i < s2.length(); i++) {
+            // If the current window matches the frequency of s1, return true
+            if (Arrays.equals(s1Freq, windowFreq)) {
+                return true;
+            }
+            
+            // Slide the window:
+            // 1. Add the new character in the window
+            windowFreq[s2.charAt(i) - 'a']++;
+            // 2. Remove the old character from the start of the window
+            windowFreq[s2.charAt(i - s1.length()) - 'a']--;
         }
-
-        // If the initial window (first len1 characters) is a permutation, return true
-        if (allZeroes(charCount)) return true;
-
-        int left = 0; // Left pointer of the sliding window
-        int right = len1; // Right pointer of the sliding window
-
-        // Slide the window over s2
-        while (right < len2) {
-            // Add the character going out of the window (left side)
-            charCount[s2.charAt(left) - 'a']++;
-
-            // Subtract the character coming into the window (right side)
-            charCount[s2.charAt(right) - 'a']--;
-
-            // Check if the current window is a permutation of s1
-            if (allZeroes(charCount)) return true;
-
-            // Move the window to the right
-            left++;
-            right++;
-        }
-
-        // No permutation found
-        return false;
-    }
-
-    // Helper method to check if all counts in the array are zero
-    public boolean allZeroes(int[] countArray) {
-        for (int count : countArray) {
-            if (count != 0) return false;
-        }
-        return true;
+        
+        // Check the last window
+        return Arrays.equals(s1Freq, windowFreq);
     }
 }
