@@ -1,15 +1,42 @@
+import java.util.*;
+
 class Solution {
     public int leastInterval(char[] tasks, int n) {
-        int [] charArr = new int [26];
-        for(int i=0;i<tasks.length;i++){
-            charArr[tasks[i]-'A']++;
+        if (n == 0) return tasks.length;
+
+        // Frequency array for each task
+        int[] frequency = new int[26];
+        for (char task : tasks) {
+            frequency[task - 'A']++;
         }
-        Arrays.sort(charArr);
-        int max  = charArr[25];
-        int idle = (max-1)*n;
-        for(int i=24;i>=0;i--){
-            idle-=Math.min(max-1,charArr[i]);
+
+        // Max heap for the task frequencies
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        for (int count : frequency) {
+            if (count > 0) {
+                maxHeap.add(count);
+            }
         }
-        return tasks.length + Math.max(idle,0);
+
+        int time = 0;  // Total time intervals
+        Queue<Pair<Integer, Integer>> waitQueue = new LinkedList<>();  // Wait queue for cooldown tasks
+
+        while (!maxHeap.isEmpty() || !waitQueue.isEmpty()) {
+            time++;  // Increment time at each interval
+
+            if (!maxHeap.isEmpty()) {
+                int currentTaskCount = maxHeap.poll() - 1;  // Process one task
+                if (currentTaskCount > 0) {
+                    waitQueue.add(new Pair<>(currentTaskCount, time + n));  // Add to wait queue if still needed
+                }
+            }
+
+            // Check if any task in waitQueue can be re-added to maxHeap
+            if (!waitQueue.isEmpty() && waitQueue.peek().getValue() == time) {
+                maxHeap.add(waitQueue.poll().getKey());
+            }
+        }
+
+        return time;  // Return the total time taken
     }
 }
