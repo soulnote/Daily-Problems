@@ -10,46 +10,42 @@
  */
 class Solution {
     public void reorderList(ListNode head) {
-        if(head==null || head.next == null || head.next.next==null)return ;
-        ListNode fast = head, slow = head;
+        if (head == null || head.next == null || head.next.next == null) return;
         
-        while(fast.next!=null && fast.next.next!=null ){
-            fast = fast.next.next;
+        // Step 1: Find the middle of the linked list using slow and fast pointers
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
             slow = slow.next;
+            fast = fast.next.next;
         }
-        fast = slow. next;
-        slow.next = null;
-        fast = reverse(fast);
+
+        // Step 2: Reverse the second half of the linked list
+        ListNode secondHalf = reverse(slow.next);
+        slow.next = null;  // Cut the list into two halves
         
-        ListNode ans = new ListNode(0);
-        ListNode start = head;
-        while(start!=null && fast!=null){
-            ans.next = start;
-            ans = ans.next;
-            start = start.next;
-            ans.next = fast;
-            ans = ans.next;
-            fast = fast.next;
+        // Step 3: Merge the two halves
+        ListNode firstHalf = head;
+        while (secondHalf != null) {
+            ListNode temp1 = firstHalf.next;
+            ListNode temp2 = secondHalf.next;
+            
+            firstHalf.next = secondHalf;
+            secondHalf.next = temp1;
+            
+            firstHalf = temp1;
+            secondHalf = temp2;
         }
-        while(fast!=null){
-            ans.next = fast;
-            fast = fast.next;
-        }
-        while(start!=null){
-            ans.next = start;
-            start = start.next;
-        }
-        return;
     }
-    public ListNode reverse(ListNode head){
-            ListNode pre = null;
-            ListNode curr = head;
-            while(curr!=null){
-                ListNode next = curr.next;
-                curr.next = pre;
-                pre = curr;
-                curr = next;
-            }
-            return pre;
+
+    // Helper method to reverse a linked list
+    private ListNode reverse(ListNode head) {
+        ListNode prev = null, curr = head;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
+        return prev;
+    }
 }
