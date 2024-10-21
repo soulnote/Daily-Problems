@@ -10,34 +10,46 @@
  */
 class Solution {
     public void reorderList(ListNode head) {
-        if(head==null || head.next==null || head.next.next ==null)return ;
-        ListNode slow =head,fast=head;
-        while(fast!=null && fast.next!=null){
-            fast=fast.next.next;
-            slow= slow.next;
+        if(head==null || head.next == null || head.next.next==null)return ;
+        ListNode fast = head, slow = head;
+        
+        while(fast.next!=null && fast.next.next!=null ){
+            fast = fast.next.next;
+            slow = slow.next;
         }
-        fast = slow.next;
+        fast = slow. next;
         slow.next = null;
-        ListNode head2 = reverse(fast);
-        ListNode headnew = head;
-        while(head2!=null){
-            ListNode nextofhead = head.next;
-            ListNode nextofhead2 = head2.next;
-            head.next= head2;
-            head2.next = nextofhead;
-            head = nextofhead;
-            head2= nextofhead2;
+        fast = reverse(fast);
+        
+        ListNode ans = new ListNode(0);
+        ListNode start = head;
+        while(start!=null && fast!=null){
+            ans.next = start;
+            ans = ans.next;
+            start = start.next;
+            ans.next = fast;
+            ans = ans.next;
+            fast = fast.next;
         }
-        head = headnew;
+        while(fast!=null){
+            ans.next = fast;
+            fast = fast.next;
+        }
+        while(start!=null){
+            ans.next = start;
+            start = start.next;
+        }
+        return;
     }
     public ListNode reverse(ListNode head){
-        ListNode pre = null;
-        while(head!=null){
-            ListNode next = head.next;
-            head.next = pre;
-            pre = head;
-            head = next;
+            ListNode pre = null;
+            ListNode curr = head;
+            while(curr!=null){
+                ListNode next = curr.next;
+                curr.next = pre;
+                pre = curr;
+                curr = next;
+            }
+            return pre;
         }
-        return pre;
-    }
 }
