@@ -15,12 +15,15 @@
  */
 class Solution {
     public boolean isSameTree(TreeNode p, TreeNode q) {
-        if(p==null && q==null)return true;
-        if(p==null || q==null)return false;
-        boolean isRootEquals = (p.val==q.val);
-        boolean isLeftEquals = isSameTree(p.left,q.left);
-        boolean isRightEquals = isSameTree(p.right,q.right);
-        if(isRootEquals && isLeftEquals && isRightEquals)return true;
-        else return false;
+        return traversal(p,q);
+    }
+    boolean traversal(TreeNode p, TreeNode q){
+        if(p==null && q == null)return true;
+        if(p==null || q == null)return false;
+        if(!(p.val==q.val))return false;
+        boolean left = isSameTree(p.left, q.left);
+        boolean right = isSameTree(p.right, q.right);
+        
+        return left && right;
     }
 }
