@@ -15,12 +15,13 @@
  */
 class Solution {
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-        if(root==null)return false;
-        if(isSameTree(root, subRoot))return true;
+        if(root==null && subRoot==null)return true;
+        if(root==null || subRoot == null)return false;
+        boolean curr = isSameTree(root, subRoot);
         boolean left = isSubtree(root.left, subRoot);
         boolean right = isSubtree(root.right, subRoot);
 
-        return left || right;
+        return curr || left || right;
     }
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if(p==null && q==null)return true;
@@ -28,6 +29,7 @@ class Solution {
         boolean isRootEquals = (p.val==q.val);
         boolean isLeftEquals = isSameTree(p.left,q.left);
         boolean isRightEquals = isSameTree(p.right,q.right);
-        return isRootEquals && isLeftEquals && isRightEquals;
+        if(isRootEquals && isLeftEquals && isRightEquals)return true;
+        else return false;
     }
 }
