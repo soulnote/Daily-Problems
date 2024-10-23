@@ -14,20 +14,20 @@
  * }
  */
 class Solution {
-    boolean ans =false;
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
         if(root==null)return false;
-        if(root.val==subRoot.val){
-            ans = ans|isSameTree(root,subRoot);
-        }
+        if(isSameTree(root, subRoot))return true;
         boolean left = isSubtree(root.left, subRoot);
         boolean right = isSubtree(root.right, subRoot);
-        return left|right|ans;
+
+        return left || right;
     }
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if(p==null && q==null)return true;
         if(p==null || q==null)return false;
-        if(p.val==q.val && isSameTree(p.left,q.left)&&isSameTree(p.right,q.right))return true;
-        else return false;
+        boolean isRootEquals = (p.val==q.val);
+        boolean isLeftEquals = isSameTree(p.left,q.left);
+        boolean isRightEquals = isSameTree(p.right,q.right);
+        return isRootEquals && isLeftEquals && isRightEquals;
     }
 }
