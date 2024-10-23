@@ -23,7 +23,7 @@ class Solution {
         if(root==null)return ;
         if(root.val>=max){
             count++;
-            max = Math.max(root.val,max);
+            max = root.val;
         }
         solve(root.left, max);
         solve(root.right, max);
