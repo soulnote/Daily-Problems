@@ -1,30 +1,20 @@
-import java.util.*;
-
 class Solution {
-    List<List<Integer>> ans = new ArrayList<>();
-    
     public List<List<Integer>> permute(int[] nums) {
-        List<Integer> list = new ArrayList<>();
-        for (int num : nums) {
-            list.add(num);
-        }
-        List<Integer> ansList = new ArrayList<>();
-        solve(list, ansList);
-        return ans;
+        List<List<Integer>> ret = new ArrayList<>();
+        dfs(ret, new LinkedHashSet<>(), nums);
+        return ret;
     }
     
-    public void solve(List<Integer> list, List<Integer> ansList) {
-        if (list.size() == 0) {
-            ans.add(new ArrayList<>(ansList));
+    private void dfs(List<List<Integer>> ret, Set<Integer> path, int[] nums) {
+        if (path.size() == nums.length) {
+            ret.add(new ArrayList<>(path));
             return;
         }
-        for (int i = 0; i < list.size(); i++) {
-            int a = list.get(i);
-            List<Integer> newList = new ArrayList<>(list);
-            newList.remove(i);
-            ansList.add(a);
-            solve(newList, ansList);
-            ansList.remove(ansList.size() - 1);
+        for (int num : nums) {
+            if (path.add(num)) {
+                dfs(ret, path, nums);
+                path.remove(num);
+            }
         }
     }
 }
