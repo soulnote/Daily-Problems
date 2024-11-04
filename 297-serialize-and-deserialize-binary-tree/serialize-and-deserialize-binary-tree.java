@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class Codec {
@@ -23,21 +24,22 @@ public class Codec {
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        List<String> vals = new ArrayList<>(Arrays.asList(data.split(",")));
-        return dfsDeserialize(vals);
+        List<String> vals = Arrays.asList(data.split(","));
+        Iterator<String> iterator = vals.iterator();
+        return dfsDeserialize(iterator);
     }
 
-    private TreeNode dfsDeserialize(List<String> vals) {
-        if (vals.isEmpty()) return null;
+    private TreeNode dfsDeserialize(Iterator<String> iterator) {
+        if (!iterator.hasNext()) return null;
 
-        String val = vals.remove(0); // Remove and get the first element
+        String val = iterator.next();
         if (val.equals("N")) {
             return null;
         }
         
         TreeNode node = new TreeNode(Integer.parseInt(val));
-        node.left = dfsDeserialize(vals);
-        node.right = dfsDeserialize(vals);
+        node.left = dfsDeserialize(iterator);
+        node.right = dfsDeserialize(iterator);
         return node;
     }
 }
