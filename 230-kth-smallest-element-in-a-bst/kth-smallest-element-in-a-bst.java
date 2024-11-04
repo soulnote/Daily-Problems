@@ -1,19 +1,24 @@
-import java.util.List;
-import java.util.ArrayList;
-
 class Solution {
+    private int count = 0, ans = -1;
+
     public int kthSmallest(TreeNode root, int k) {
-        List<Integer> result = new ArrayList<>();
-        inorderTraversal(root,result);
-        if (k > 0 && k <= result.size()) {
-            return result.get(k - 1);
-        }
-        return -1;
+        count = 0;  // Reset count before each call
+        ans = -1;   // Reset ans before each call
+        inorderTraversal(root, k);
+        return ans;
     }
-    private void inorderTraversal(TreeNode root, List<Integer> result) {
+
+    private void inorderTraversal(TreeNode root, int k) {
         if (root == null) return;
-        inorderTraversal(root.left, result);
-        result.add(root.val);
-        inorderTraversal(root.right, result);
+
+        inorderTraversal(root.left, k);
+        
+        count++;
+        if (count == k) {
+            ans = root.val;
+            return;
+        }
+        
+        inorderTraversal(root.right, k);
     }
 }
