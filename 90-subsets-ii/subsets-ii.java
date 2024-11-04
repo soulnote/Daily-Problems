@@ -8,7 +8,7 @@ class Solution {
     }
     public void solve(int idx,int[]nums,List<Integer>list, HashSet<List<Integer>> ans){
         if(idx==nums.length){
-            if(!ans.contains(list)){
+            if(ans.contains(list)==false){
                 ans.add(new ArrayList<>(list));
             }
             return;
