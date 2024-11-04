@@ -11,7 +11,8 @@ class Solution {
             return;
         }
         for (int num : nums) {
-            if(!path.contains(num)) {
+            if(path.contains(num))continue;
+            else{
                 path.add(num);
                 dfs(res, path, nums);
                 path.remove(num);
