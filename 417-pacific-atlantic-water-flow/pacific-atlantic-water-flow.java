@@ -4,6 +4,7 @@ class Solution {
         int[][] pacific = new int[m][n];
         int[][] atlantic = new int[m][n];
         Queue<int[]> q = new LinkedList<>(); 
+        //checking those cells which will flow in pacific
         for(int i=0;i<m;i++){
             pacific[i][0] = 1;
             q.add(new int[]{i,0});
@@ -16,6 +17,7 @@ class Solution {
 
         q.clear();
 
+        //checking those cells which will flow in Atlantic
         for(int j=0;j<n;j++){
             atlantic[m-1][j] = 2;
             q.add(new int[]{m-1,j});
@@ -25,13 +27,6 @@ class Solution {
             q.add(new int[]{i,n-1});
         }
        bfs(q,'A',heights,pacific,atlantic);
-
-    //    for(int i = 0 ; i< m ; i++){
-    //     for(int j = 0 ; j < n; j ++){
-    //         System.out.print(pacific[i][j] + " ");
-    //     }
-    //     System.out.println();
-    //    }
 
         List<List<Integer>> ans = new ArrayList<>();
         for(int i=0;i<m;i++){
@@ -47,7 +42,6 @@ class Solution {
     int[]dC = new int[]{0,0,1,-1};
     public void bfs(Queue<int[]>q,char ocean,int[][]grid,int[][]pacific,int[][]atlantic){
         while(!q.isEmpty()){
-            // System.out.println("Jai Shree Ram");
             int size = q.size();
             for(int i=0;i<size;i++){
                 int[] present = q.poll();
@@ -60,9 +54,7 @@ class Solution {
                     int nCol = col+dC[k];
 
                     if(nRow<grid.length && nRow>=0 && nCol>=0 && nCol<grid[0].length && grid[nRow][nCol]>=grid[row][col]){
-                        // System.out.println(nRow + " " + nCol );
                         if (ocean == 'P' && pacific[nRow][nCol]==0) {
-                            // System.out.println(nRow + " " + nCol );
                             pacific[nRow][nCol] = 1;
                             q.offer(new int[]{nRow, nCol});
                         }
