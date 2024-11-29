@@ -35,6 +35,6 @@ class Solution {
         }
         if(fresh!=0)return -1;
         
-        return time-1;
+        return time-1;//because while loop runs one extra time when all the oranges are rotten
     }
 }
