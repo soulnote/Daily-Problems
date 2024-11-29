@@ -15,6 +15,8 @@ class Solution {
             }
         }
     }
+
+    
     int[] dRow = new int[]{0,0,1,-1};
     int[] dCol = new int[]{1,-1,0,0};
     public void dfs(int row,int col, char[][]grid){
