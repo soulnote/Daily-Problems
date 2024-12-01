@@ -1,15 +1,12 @@
 class Solution {
     public boolean checkIfExist(int[] arr) {
-        HashSet<Float> map = new HashSet<>();
-        for(float num : arr){
-            
-            float twice = num*2, half = num/2;
-            if(map.contains(twice)||map.contains(half)){
-                // System.out.println(twice);
-                // System.out.println(half);
+        HashSet<Integer> set = new HashSet<>();
+        for(int num : arr){
+            int twice = num*2, half = num/2;
+            if(set.contains(twice)||(num % 2 == 0 && set.contains(half))){
                 return true;
             }
-            map.add(num);
+            set.add(num);
         }
         return false;
     }
