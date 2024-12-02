@@ -1,41 +1,47 @@
 class Solution {
     public int[] findOrder(int n, int[][] prerequisites) {
-        List<List<Integer>> adj = new ArrayList<>();
-        for(int i=0;i<n;i++){
-            adj.add(new ArrayList<>());
+        List<Integer>[] adj = new List[n];
+        int[] indegree = new int[n];
+        List<Integer> ans = new ArrayList<>();
+
+        for (int[] pair : prerequisites) {
+            int course = pair[0];
+            int prerequisite = pair[1];
+            if (adj[prerequisite] == null) {
+                adj[prerequisite] = new ArrayList<>();
+            }
+            adj[prerequisite].add(course);
+            indegree[course]++;
         }
-        for(int i=0;i<prerequisites.length;i++){
-            adj.get(prerequisites[i][1]).add(prerequisites[i][0]);
-        }
-        int[]vis = new int[n];
-        Stack<Integer> st = new Stack<>();
-        for(int i=0;i<n;i++){
-            if(vis[i]==0){
-                dfs(i,adj,vis,st);
+
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (indegree[i] == 0) {
+                queue.offer(i);
             }
         }
-        if(isCycle)return new int[]{};
-        int []ans = new int[n];
-        for(int i=0;i<n;i++){
-            ans[i] = st.peek();
-            st.pop();
-        }
-        return ans;
-    }
-    boolean isCycle = false;
-    public void dfs(int src, List<List<Integer>>adj, int[]vis, Stack<Integer>st){
-        vis[src] =1;
-        for(Integer nbr : adj.get(src)){
-            if(vis[nbr]==0){
-                dfs(nbr, adj, vis, st);
-                if(isCycle)return;
-            }
-            else if(vis[nbr]==1){
-                isCycle = true;
-                return;
+
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            ans.add(current);
+
+            if (adj[current] != null) {
+                for (int next : adj[current]) {
+                    indegree[next]--;
+                    if (indegree[next] == 0) {
+                        queue.offer(next);
+                    }
+                }
             }
         }
-        vis[src] = 2;
-        st.push(src);
+
+        if (ans.size() == n) {
+            int[] res = new int[ans.size()];
+            for (int i = 0; i < ans.size(); i++) {
+                res[i] = ans.get(i); // Unboxing Integer to int
+            }
+            return res;
+        }
+        return new int[0];
     }
 }
