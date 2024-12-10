@@ -1,29 +1,30 @@
-public class Solution {
+import java.util.*;
+
+class Solution {
     public int maximumLength(String s) {
         int n = s.length();
-        int l = 1, r = n;
-
-        if (!helper(s, n, l)) return -1;
-
-        while (l + 1 < r) {
-            int mid = (l + r) / 2;
-            if (helper(s, n, mid)) l = mid;
-            else r = mid;
-        }
-
-        return l;
-    }
-
-    private boolean helper(String s, int n, int x) {
-        int[] cnt = new int[26];
-        int p = 0;
-
+        Map<String, Integer> mp = new HashMap<>();
         for (int i = 0; i < n; i++) {
-            while (s.charAt(p) != s.charAt(i)) p++;
-            if (i - p + 1 >= x) cnt[s.charAt(i) - 'a']++;
-            if (cnt[s.charAt(i) - 'a'] > 2) return true;
+            for (int j = i; j < n; j++) {
+                StringBuilder str = new StringBuilder();
+                for (int k = i; k <= j; k++) {
+                    str.append(s.charAt(k));
+                }
+                Set<Character> uniqueChars = new HashSet<>();
+                for (int l = 0; l < str.length(); l++) {
+                    uniqueChars.add(str.charAt(l));
+                }
+                if (uniqueChars.size() == 1) {
+                    mp.put(str.toString(), mp.getOrDefault(str.toString(), 0) + 1);
+                }
+            }
         }
-
-        return false;
+        int maxi = -1;
+        for (Map.Entry<String, Integer> entry : mp.entrySet()) {
+            if (entry.getValue() >= 3) {
+                maxi = Math.max(maxi, entry.getKey().length());
+            }
+        }
+        return maxi;
     }
 }
