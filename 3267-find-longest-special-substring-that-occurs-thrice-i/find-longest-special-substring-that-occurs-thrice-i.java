@@ -1,30 +1,38 @@
-import java.util.*;
-
 class Solution {
     public int maximumLength(String s) {
-        int n = s.length();
-        Map<String, Integer> mp = new HashMap<>();
-        for (int i = 0; i < n; i++) {
-            for (int j = i; j < n; j++) {
-                StringBuilder str = new StringBuilder();
-                for (int k = i; k <= j; k++) {
-                    str.append(s.charAt(k));
-                }
-                Set<Character> uniqueChars = new HashSet<>();
-                for (int l = 0; l < str.length(); l++) {
-                    uniqueChars.add(str.charAt(l));
-                }
-                if (uniqueChars.size() == 1) {
-                    mp.put(str.toString(), mp.getOrDefault(str.toString(), 0) + 1);
+        int[][] top3freq = new int[26][3];
+        for (int i = 0; i < 26; i++) Arrays.fill(top3freq[i], -1);
+
+        char lastSeen = '*';
+        int count = 0;
+
+        // Find top-3 substring lengths for each character (a to z)
+        for (char curr : s.toCharArray()) {
+            int idx = curr - 'a';
+            count = (curr == lastSeen) ? count + 1 : 1;
+            lastSeen = curr;
+
+            int minIndex = 0;
+            for (int j = 1; j < 3; j++) {
+                if (top3freq[idx][j] < top3freq[idx][minIndex]) {
+                    minIndex = j;
                 }
             }
-        }
-        int maxi = -1;
-        for (Map.Entry<String, Integer> entry : mp.entrySet()) {
-            if (entry.getValue() >= 3) {
-                maxi = Math.max(maxi, entry.getKey().length());
+
+            if (count > top3freq[idx][minIndex]) {
+                top3freq[idx][minIndex] = count;
             }
         }
-        return maxi;
+
+        // Find the maximum length of substrings
+        int maxLen = -1;
+        for (int i = 0; i < 26; i++) {
+            maxLen = Math.max(maxLen, getMin(top3freq[i][0], top3freq[i][1], top3freq[i][2]));
+        }
+
+        return maxLen;
+    }
+    private int getMin(int a, int b, int c) {
+        return Math.min(a, Math.min(b, c));
     }
 }
