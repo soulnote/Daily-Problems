@@ -4,9 +4,8 @@ class Solution {
         for(long num : gifts){
             pq.add(num);
         }
-        for(int i=0;i<k;i++){
+        for(int i=0;i<k && pq.peek()>1;i++){
             double sq = Math.sqrt(pq.poll());
-
             long floor = (long)Math.floor(sq);
             pq.add(floor);
         }
