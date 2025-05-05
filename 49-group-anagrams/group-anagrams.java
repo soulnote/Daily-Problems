@@ -7,13 +7,10 @@ class Solution {
             char[] tempS = s.toCharArray();
             Arrays.sort(tempS);
             String sortedS = new String(tempS);
-            if(map.containsKey(sortedS)){
-                map.get(sortedS).add(s);
-            }
-            else{
+            if(!map.containsKey(sortedS)){
                 map.put(sortedS, new ArrayList());
-                map.get(sortedS).add(s);
             }
+            map.get(sortedS).add(s);
         }
         for (String key : map.keySet()) {
             ans.add(map.get(key));
