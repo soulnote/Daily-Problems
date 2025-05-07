@@ -1,26 +1,20 @@
-class Solution {
+public class Solution {
     public int characterReplacement(String s, int k) {
-        // Create an array to store the frequency of each character in the window
-        int[] charCount = new int[26];
-        int left = 0, maxCount = 0, maxLength = 0;
+        HashMap<Character, Integer> count = new HashMap<>();
+        int res = 0;
 
-        for (int right = 0; right < s.length(); right++) {
-            // Increment the count of the current character
-            charCount[s.charAt(right) - 'A']++;
+        int l = 0, maxf = 0;
+        for (int r = 0; r < s.length(); r++) {
+            count.put(s.charAt(r), count.getOrDefault(s.charAt(r), 0) + 1);
+            maxf = Math.max(maxf, count.get(s.charAt(r)));
 
-            // Update the count of the most frequent character in the window
-            maxCount = Math.max(maxCount, charCount[s.charAt(right) - 'A']);
-
-            // If the number of characters to change exceeds k, shrink the window
-            while (right - left + 1 - maxCount > k) {
-                charCount[s.charAt(left) - 'A']--;
-                left++;
+            while ((r - l + 1) - maxf > k) {
+                count.put(s.charAt(l), count.get(s.charAt(l)) - 1);
+                l++;
             }
-
-            // Update the maximum length of the window
-            maxLength = Math.max(maxLength, right - left + 1);
+            res = Math.max(res, r - l + 1);
         }
 
-        return maxLength;
+        return res;
     }
 }
