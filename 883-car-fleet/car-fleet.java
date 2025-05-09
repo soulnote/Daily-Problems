@@ -1,33 +1,20 @@
 class Solution {
-    class Car {
-        int position;
-        int speed;
-        
-        public Car(int position, int speed) {
-            this.position = position;
-            this.speed = speed;
-        }
-    }
-    
     public int carFleet(int target, int[] position, int[] speed) {
         int n = position.length;
-        Car[] cars = new Car[n];
-        
-        for(int i = 0; i < n; i++) {
-            cars[i] = new Car(position[i], speed[i]);
+        double[][]posTime = new double[n][2];
+        for(int i =0;i<n;i++){
+            double time = (double)(target - position[i]) / speed[i];
+            posTime[i] = new double[]{position[i], time};
         }
-        
-        Arrays.sort(cars, (a, b) -> b.position - a.position);
-        
-        Stack<Double> stack = new Stack<>();
-        
-        for(Car car : cars) {
-            double time = (double)(target - car.position) / car.speed;
-            
-            if(stack.isEmpty() || stack.peek() < time)
-                stack.push(time);
+        Arrays.sort(posTime,(a, b) -> Double.compare(a[0], b[0]));
+        Stack<Double> st = new Stack<>();
+        for(int i=n-1;i>=0;i--){
+            if(st.size()==0 || posTime[i][1]>st.peek()){
+                st.push(posTime[i][1]);
+                System.out.println(posTime[i][1]);
+            }
+           
         }
-        
-        return stack.size();
+        return st.size();
     }
 }
