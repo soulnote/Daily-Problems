@@ -3,39 +3,48 @@ import java.util.Stack;
 class Solution {
     public int largestRectangleArea(int[] heights) {
         int n = heights.length;
-        int[] nextSmallerLeft = new int[n];
-        int[] nextSmallerRight = new int[n];
-        Stack<Integer> stack = new Stack<>();
+        int[] nextsmallerLeft = new int[n];
+        int[] nextsmallerRight = new int[n];
 
-        // Find the next smaller element to the left
+        Stack<Integer> st = new Stack<>();
+
+        // Compute next smaller to left
         for (int i = 0; i < n; i++) {
-            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
-                stack.pop();
+            while (!st.isEmpty() && heights[st.peek()] >= heights[i]) {
+                st.pop();
             }
-            nextSmallerLeft[i] = stack.isEmpty() ? -1 : stack.peek();
-            stack.push(i);
+            if (st.isEmpty()) {
+                nextsmallerLeft[i] = -1;  // No smaller element on the left
+            } else {
+                nextsmallerLeft[i] = st.peek();
+            }
+            st.push(i);
         }
 
-        // Clear the stack for the next iteration
-        stack.clear();
+        st.clear();  // Clear stack for next computation
 
-        // Find the next smaller element to the right
+        // Compute next smaller to right
         for (int i = n - 1; i >= 0; i--) {
-            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
-                stack.pop();
+            while (!st.isEmpty() && heights[st.peek()] >= heights[i]) {
+                st.pop();
             }
-            nextSmallerRight[i] = stack.isEmpty() ? n : stack.peek();
-            stack.push(i);
+            if (st.isEmpty()) {
+                nextsmallerRight[i] = n;  // No smaller element on the right
+            } else {
+                nextsmallerRight[i] = st.peek();
+            }
+            st.push(i);
         }
 
-        // Calculate the maximum area
+        // Calculate the largest rectangle
         int maxArea = 0;
         for (int i = 0; i < n; i++) {
-            int width = nextSmallerRight[i] - nextSmallerLeft[i] - 1;
-            int area = width * heights[i];
+            int height = heights[i];
+            int width = nextsmallerRight[i] - nextsmallerLeft[i] - 1;  // Calculate the width
+            int area = height * width;
             maxArea = Math.max(maxArea, area);
         }
-        
+
         return maxArea;
     }
 }
