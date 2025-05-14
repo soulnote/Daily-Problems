@@ -14,8 +14,8 @@ class Solution {
             int c = mid % n;
 
             if (matrix[r][c] == target) return true;
-            else if (matrix[r][c] < target) left = mid + 1; // fixed: advance left to mid+1
-            else right = mid - 1; // fixed: move right to mid-1
+            else if (matrix[r][c] < target) left = mid + 1; //  advance left to mid+1
+            else right = mid - 1; //  move right to mid-1
         }
 
         return false;
