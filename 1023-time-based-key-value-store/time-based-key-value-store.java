@@ -1,52 +1,59 @@
+import java.util.*;
+
 class TimeMap {
-    class Store{
-        String val;
-        int time;
-        Store(String value, int time){
-            this.val  = value;
-            this.time = time;
+
+    // Inner class to store value and its corresponding timestamp
+    class Entry {
+        String value;
+        int timestamp;
+
+        Entry(String value, int timestamp) {
+            this.value = value;
+            this.timestamp = timestamp;
         }
     }
-    HashMap<String,List<Store>> map;
+
+    // Map to store each key with a list of its values over time
+    private Map<String, List<Entry>> map;
+
     public TimeMap() {
         map = new HashMap<>();
     }
-    
+
+    // Stores the key with the value and timestamp
     public void set(String key, String value, int timestamp) {
-        // List<Store> list = map.get(key);
-        // list.add(new Store(value, timestamp));
-        // map.put(key, list);
-        if(!map.containsKey(key)){
-            List<Store> newList = new ArrayList<>();
-            map.put(key, newList);
-        }
-        map.get(key).add(new Store(value, timestamp));
-        // map.put(key, map.get(key).add(new Store(value, timestamp)));
+        // Create list if key is not already present
+        map.putIfAbsent(key, new ArrayList<>());
+        // Add the new entry
+        map.get(key).add(new Entry(value, timestamp));
     }
-    
+
+    // Returns the value at the given timestamp or the closest earlier one
     public String get(String key, int timestamp) {
-        List<Store> list = map.get(key);
-        if(!map.containsKey(key))return "";
-        if(list.size()==0)return "";
-        int left =0, right = list.size()-1;
-        while(left<=right){
-            int mid = left + (right-left)/2;
-            if(list.get(mid).time == timestamp)return list.get(mid).val;
-            else if(list.get(mid).time > timestamp){
-                right = mid-1;
-            }
-            else{
-                left = mid+1;
+        if (!map.containsKey(key)) {
+            return "";
+        }
+
+        List<Entry> entries = map.get(key);
+
+        // Binary search to find the latest timestamp ≤ given timestamp
+        int left = 0, right = entries.size() - 1;
+        String result = "";
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            Entry current = entries.get(mid);
+
+            if (current.timestamp == timestamp) {
+                return current.value; // Exact match
+            } else if (current.timestamp < timestamp) {
+                result = current.value; // Potential result, keep searching right
+                left = mid + 1;
+            } else {
+                right = mid - 1; // Search left
             }
         }
-        if(right<0)return "";
-        return list.get(right).val;
+
+        return result;
     }
 }
-
-/**
- * Your TimeMap object will be instantiated and called as such:
- * TimeMap obj = new TimeMap();
- * obj.set(key,value,timestamp);
- * String param_2 = obj.get(key,timestamp);
- */
