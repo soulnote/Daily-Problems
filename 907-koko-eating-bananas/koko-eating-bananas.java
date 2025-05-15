@@ -1,31 +1,35 @@
 class Solution {
     public int minEatingSpeed(int[] piles, int h) {
-        int maxEat = 0;
-        for(int num : piles){
-            maxEat = Math.max(num, maxEat);
+        // Step 1: Find the maximum number of bananas in any pile
+        int maxPile = 0;
+        for (int bananas : piles) {
+            maxPile = Math.max(maxPile, bananas);
         }
-        int left  = 1,right =maxEat;
-        int ans = 0;
-        while(left<=right){
-            int hRemaining = h;
-            int idx = 0;
-            int minEat = left+(right-left)/2;
-            while(idx<piles.length){
-                int banana = piles[idx];
-                hRemaining-= (banana/minEat);
-                banana%=minEat;
-                if(banana>0)hRemaining--;
-                idx++;
+
+        // Step 2: Use binary search to find the minimum eating speed (k)
+        int left = 1;
+        int right = maxPile;
+        int result = maxPile; // Initialize result with the maximum possible speed
+
+        while (left <= right) {
+            int midSpeed = left + (right - left) / 2;
+
+            // Step 3: Calculate total hours needed to eat all bananas at speed midSpeed
+            long totalHours = 0;
+            for (int bananas : piles) {
+                // Use ceiling division: (bananas + midSpeed - 1) / midSpeed
+                totalHours += (bananas + midSpeed - 1) / midSpeed;
             }
-            if(hRemaining>=0){
-                ans = minEat;
-                right = minEat-1;
+
+            // Step 4: Check if Koko can finish eating in h hours with midSpeed
+            if (totalHours <= h) {
+                result = midSpeed;  // midSpeed is a valid option, try to find a smaller one
+                right = midSpeed - 1;
+            } else {
+                left = midSpeed + 1; // midSpeed too small, increase it
             }
-            else{
-                left = minEat+1;
-            }
-            
         }
-        return ans;
+
+        return result;
     }
 }
