@@ -1,27 +1,27 @@
 class Solution {
     public void sortColors(int[] nums) {
-        int red = 0,white=0,blue=0;
-        for(int i=0;i<nums.length;i++){
-            if(nums[i]==0){
-                red++;
-            }
-            else if(nums[i]==1){
-                white++;
-            }
-            else blue++;
-        }
-        for(int i=0;i<nums.length;i++){
-            if(red>0){
-                nums[i]= 0;
-                red--;
-            }
-            else if(white>0){
-                nums[i] = 1;
-                white--;
-            }
-            else{
-                nums[i] = 2;
+        int low = 0, mid = 0, high = nums.length - 1;
+
+        while (mid <= high) {
+            if (nums[mid] == 0) {
+                // Swap nums[low] and nums[mid], then increment both
+                int temp = nums[low];
+                nums[low] = nums[mid];
+                nums[mid] = temp;
+                low++;
+                mid++;
+            } else if (nums[mid] == 1) {
+                // Leave 1 in place and move mid forward
+                mid++;
+            } else {
+                // Swap nums[mid] and nums[high], only decrement high
+                int temp = nums[mid];
+                nums[mid] = nums[high];
+                nums[high] = temp;
+                high--;
+                // Do not increment mid here, since the new nums[mid] needs to be checked again
             }
         }
     }
+
 }
