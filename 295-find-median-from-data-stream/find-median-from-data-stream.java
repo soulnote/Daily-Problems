@@ -2,22 +2,19 @@ class MedianFinder {
     private PriorityQueue<Integer> small = new PriorityQueue<>(Collections.reverseOrder());
     private PriorityQueue<Integer> large = new PriorityQueue<>();
     private boolean even = true;
-    public double MedianFinder() {
-        if(even) return (small.peek()+large.peek())/2.0;
-        else return small.peek();
-    }
-    
+
     public void addNum(int num) {
-        if(even){
-            large.offer(num);
+        //total elements even  → both heaps have equal size
+        if(even){ //total elements odd  → small heap have one extra element
+            large.offer(num); 
             small.offer(large.poll());
-        }else {
+        } else {
             small.offer(num);
-            large.offer(small.poll());
+            large.offer(small.poll()); 
         }
-        even = !even;
+        even = !even; 
     }
-    
+
     public double findMedian() {
         if (even)
             return (small.peek() + large.peek()) / 2.0;
@@ -26,9 +23,3 @@ class MedianFinder {
     }
 }
 
-/**
- * Your MedianFinder object will be instantiated and called as such:
- * MedianFinder obj = new MedianFinder();
- * obj.addNum(num);
- * double param_2 = obj.findMedian();
- */
