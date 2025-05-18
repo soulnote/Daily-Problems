@@ -5,15 +5,14 @@ class Solution {
             pq.add(n);
         }
 
-        while(pq.size()>=0){
-            if(pq.size()==0)return 0;
-            if(pq.size()==1)break;
+        while(pq.size()>=2){
             int stone1 = pq.poll();
             int stone2 = pq.poll();
             if(stone1!=stone2){
-                pq.add((int)Math.abs(stone1-stone2));
+                pq.add(stone1-stone2);
             }
         }
+        if(pq.size()==0)return 0;
         return pq.poll();
     }
 }
