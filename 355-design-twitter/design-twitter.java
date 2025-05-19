@@ -1,5 +1,3 @@
-import java.util.*;
-
 class Twitter {
 
     private static int timeStamp = 0;  // Global timestamp
@@ -66,7 +64,7 @@ class Twitter {
         // A user cannot follow themselves
         if (followerId == followeeId) return;
 
-        // Create follower list for the user if it doesn't exist
+        // Create follower  for the user if it doesn't exist
         if (!followers.containsKey(followerId)) {
             followers.put(followerId, new HashSet<>());
         }
@@ -84,11 +82,3 @@ class Twitter {
     }
 }
 
-/**
- * Your Twitter object will be instantiated and called as such:
- * Twitter obj = new Twitter();
- * obj.postTweet(userId,tweetId);
- * List<Integer> param_2 = obj.getNewsFeed(userId);
- * obj.follow(followerId,followeeId);
- * obj.unfollow(followerId,followeeId);
- */
