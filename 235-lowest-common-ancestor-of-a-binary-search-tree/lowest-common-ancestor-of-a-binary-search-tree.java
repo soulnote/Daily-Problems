@@ -10,22 +10,28 @@
 
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root==null || root==p  || root== q)return root;
-
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-
-        if(left == null && right == null){
-            return null;
+        ArrayList<TreeNode> listP = new ArrayList<>();
+        ArrayList<TreeNode> listQ = new ArrayList<>();
+        helper(root,p,listP);
+        helper(root,q,listQ);
+       
+        int n = Math.min(listP.size(),listQ.size());
+        int i=0;
+        for(;i<n;i++){
+            if(listP.get(i)==null || listP.get(i).val!=listQ.get(i).val){
+                break;
+            }
         }
-        else if(left == null){
-            return right;
+        return listP.get(i-1);
+    }
+    public void helper(TreeNode root, TreeNode p,ArrayList<TreeNode> list){
+        if(root==null)return ;
+        list.add(root);
+        if(root.val==p.val)return;
+        if(root.val<p.val){
+            helper(root.right,p,list);
         }
-        else if(right == null){
-            return left;
-        }
-        else{
-            return root;
-        }
+        else helper(root.left,p,list);
+        
     }
 }
