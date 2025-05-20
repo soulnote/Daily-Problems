@@ -26,7 +26,7 @@ class Solution {
             for(int i=0;i<size;i++){
                 TreeNode t = q.poll();
                 if(i==0)ans.add(t.val);
-                if(t==null)continue;
+                // here we are storing from right to left in level order traversal
                 if(t.right!=null)q.offer(t.right);
                 if(t.left!=null)q.offer(t.left);
             }
