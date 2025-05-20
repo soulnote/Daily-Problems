@@ -12,26 +12,24 @@ class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         ArrayList<TreeNode> listP = new ArrayList<>();
         ArrayList<TreeNode> listQ = new ArrayList<>();
-        helper(root,p,listP);
-        helper(root,q,listQ);
+        pathTraverse(root,p,listP);
+        pathTraverse(root,q,listQ);
        
         int n = Math.min(listP.size(),listQ.size());
-        int i=0;
-        for(;i<n;i++){
-            if(listP.get(i)==null || listP.get(i).val!=listQ.get(i).val){
-                break;
-            }
+        int idx=0;
+        while(idx<n && listP.get(idx)==listQ.get(idx)){
+            idx++;
         }
-        return listP.get(i-1);
+        return listP.get(idx-1);
     }
-    public void helper(TreeNode root, TreeNode p,ArrayList<TreeNode> list){
+    public void pathTraverse(TreeNode root, TreeNode p,ArrayList<TreeNode> list){
         if(root==null)return ;
         list.add(root);
         if(root.val==p.val)return;
         if(root.val<p.val){
-            helper(root.right,p,list);
+            pathTraverse(root.right,p,list);
         }
-        else helper(root.left,p,list);
+        else pathTraverse(root.left,p,list);
         
     }
 }
