@@ -5,19 +5,15 @@ class Solution {
 
         for (int[] q : queries) {
             diff[q[0]]++;
-            if (q[1] + 1 < diff.length) {
-                diff[q[1] + 1]--;
-            }
+            diff[q[1] + 1]--;
         }
 
-        int sum = 0;
+        int prefixSum = 0;
         for (int i = 0; i < n; i++) {
-            sum += diff[i];
-            if (nums[i] <= sum) {
-                nums[i] = 0;
-            } else {
+            prefixSum += diff[i];
+            if (nums[i] > prefixSum) {
                 return false;
-            }
+            } 
         }
 
         return true;
