@@ -14,16 +14,22 @@
  * }
  */
 class Solution {
-    private String serialize(TreeNode node) {
-        if (node == null) {
-            return "N";
-        }
-        return "(" + node.val + "," + serialize(node.left) + "," + serialize(node.right) + ")";
-    }
-
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-        String rootSerialized = serialize(root);
-        String subRootSerialized = serialize(subRoot);
-        return rootSerialized.contains(subRootSerialized);
+        if(root==null && subRoot==null)return true;
+        if(root==null || subRoot == null)return false;
+        if(isSameTree(root, subRoot))return true;
+        boolean left = isSubtree(root.left, subRoot);
+        boolean right = isSubtree(root.right, subRoot);
+
+        return left || right;
+    }
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p==null && q==null)return true;
+        if(p==null || q==null)return false;
+        boolean isRootEquals = (p.val==q.val);
+        boolean isLeftEquals = isSameTree(p.left,q.left);
+        boolean isRightEquals = isSameTree(p.right,q.right);
+        if(isRootEquals && isLeftEquals && isRightEquals)return true;
+        else return false;
     }
 }
