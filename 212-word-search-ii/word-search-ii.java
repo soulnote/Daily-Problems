@@ -1,64 +1,69 @@
 class TrieNode {
-    Map<Character, TrieNode> children;
-    boolean isWord;
+    TrieNode[] children = new TrieNode[26];
+    int idx = -1;
+    int refs = 0;
 
-    public TrieNode() {
-        children = new HashMap<>();
-        isWord = false;
-    }
-
-    public void addWord(String word) {
+    public void addWord(String word, int i) {
         TrieNode cur = this;
+        cur.refs++;
         for (char c : word.toCharArray()) {
-            cur.children.putIfAbsent(c, new TrieNode());
-            cur = cur.children.get(c);
+            int index = c - 'a';
+            if (cur.children[index] == null) {
+                cur.children[index] = new TrieNode();
+            }
+            cur = cur.children[index];
+            cur.refs++;
         }
-        cur.isWord = true;
+        cur.idx = i;
     }
 }
 
 public class Solution {
-    private Set<String> res;
-    private boolean[][] visit;
-    
+    List<String> res = new ArrayList<>();
+
     public List<String> findWords(char[][] board, String[] words) {
         TrieNode root = new TrieNode();
-        for (String word : words) {
-            root.addWord(word);
+        for (int i = 0; i < words.length; i++) {
+            root.addWord(words[i], i);
         }
 
-        int ROWS = board.length, COLS = board[0].length;
-        res = new HashSet<>();
-        visit = new boolean[ROWS][COLS];
-
-        for (int r = 0; r < ROWS; r++) {
-            for (int c = 0; c < COLS; c++) {
-                dfs(board, r, c, root, "");
+        for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board[0].length; c++) {
+                dfs(board, root, r, c, words);
             }
         }
-        return new ArrayList<>(res);
+
+        return res;
     }
 
-    private void dfs(char[][] board, int r, int c, TrieNode node, String word) {
-        int ROWS = board.length, COLS = board[0].length;
-        if (r < 0 || c < 0 || r >= ROWS || 
-            c >= COLS || visit[r][c] || 
-            !node.children.containsKey(board[r][c])) {
+    private void dfs(char[][] board, TrieNode node, int r, int c, String[] words) {
+        if (r < 0 || c < 0 || r >= board.length || 
+            c >= board[0].length || board[r][c] == '*' || 
+            node.children[board[r][c] - 'a'] == null) {
             return;
         }
 
-        visit[r][c] = true;
-        node = node.children.get(board[r][c]);
-        word += board[r][c];
-        if (node.isWord) {
-            res.add(word);
+        char temp = board[r][c];
+        board[r][c] = '*';
+        TrieNode prev = node;
+        node = node.children[temp - 'a'];
+        if (node.idx != -1) {
+            res.add(words[node.idx]);
+            node.idx = -1;
+            node.refs--;
+            if (node.refs == 0) {
+                node = null;
+                prev.children[temp - 'a'] = null;
+                board[r][c] = temp;
+                return;
+            }
         }
 
-        dfs(board, r + 1, c, node, word);
-        dfs(board, r - 1, c, node, word);
-        dfs(board, r, c + 1, node, word);
-        dfs(board, r, c - 1, node, word);
+        dfs(board, node, r + 1, c, words);
+        dfs(board, node, r - 1, c, words);
+        dfs(board, node, r, c + 1, words);
+        dfs(board, node, r, c - 1, words);
 
-        visit[r][c] = false;
+        board[r][c] = temp;
     }
 }
