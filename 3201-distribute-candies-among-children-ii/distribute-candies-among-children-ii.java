@@ -1,13 +1,20 @@
 class Solution {
-
     public long distributeCandies(int n, int limit) {
-        long ans = 0;
-        for (int i = 0; i <= Math.min(limit, n); i++) {
-            if (n - i > 2 * limit) {
-                continue;
+        long count = 0;
+
+        for (int a = 0; a <= Math.min(n, limit); a++) {
+            int minB = Math.max(0, n - a - limit);
+            int maxB = Math.min(limit, n - a);
+            if (minB <= maxB) {
+                count += (maxB - minB + 1);
             }
-            ans += Math.min(n - i, limit) - Math.max(0, n - i - limit) + 1;
         }
-        return ans;
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        System.out.println(sol.distributeCandies(5, 2)); // Output: 6
     }
 }
