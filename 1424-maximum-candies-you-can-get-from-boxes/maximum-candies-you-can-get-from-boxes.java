@@ -1,46 +1,50 @@
-class Solution {
-    public int maxCandies(int[] status, int[] candies,
-                          int[][] keys, int[][] containedBoxes,
-                          int[] initialBoxes) {
-        
-        int candiesCollected = 0;
-        Set<Integer> visited = new HashSet<>();
-        Set<Integer> foundBoxes = new HashSet<>();
-        Queue<Integer> que = new LinkedList<>();
+public class Solution {
 
+    public int maxCandies(int[] status, int[] candies, int[][] keys, int[][] containedBoxes, int[] initialBoxes) {
+
+        int n = status.length;
+        boolean[] hasKey = new boolean[n];
+        boolean[] opened = new boolean[n];
+        boolean[] seen = new boolean[n];
+
+        Queue<Integer> queue = new LinkedList<>();
         for (int box : initialBoxes) {
-            foundBoxes.add(box);
-            if (status[box] == 1) {
-                que.offer(box);
-                visited.add(box);
-                candiesCollected += candies[box];
-            }
+            queue.offer(box);
+            seen[box] = true;
         }
 
-        while (!que.isEmpty()) {
-            int box = que.poll();
+        int totalCandies = 0;
 
-            // Process contained boxes
-            for (int innerBox : containedBoxes[box]) {
-                foundBoxes.add(innerBox);
-                if (status[innerBox] == 1 && !visited.contains(innerBox)) {
-                    que.offer(innerBox);
-                    visited.add(innerBox);
-                    candiesCollected += candies[innerBox];
+        while (!queue.isEmpty()) {
+            int box = queue.poll();
+
+            if (status[box]==0) {
+                if (!hasKey[box]) continue; // Skip closed box if no key
+                status[box] = 1;            // Open it if we now have key
+            }
+
+            if (opened[box]) continue;
+            opened[box] = true;
+
+            totalCandies += candies[box];
+
+            // Add contained boxes
+            for (int contained : containedBoxes[box]) {
+                if (!seen[contained]) {
+                    queue.offer(contained);
+                    seen[contained] = true;
                 }
             }
 
-            // Process keys
-            for (int boxKey : keys[box]) {
-                status[boxKey] = 1; // mark as openable
-                if (foundBoxes.contains(boxKey) && !visited.contains(boxKey)) {
-                    que.offer(boxKey);
-                    visited.add(boxKey);
-                    candiesCollected += candies[boxKey];
+            // Collect keys and enqueue any box for which we now have a key
+            for (int key : keys[box]) {
+                hasKey[key] = true;
+                if (seen[key]) {
+                    queue.offer(key);
                 }
             }
         }
 
-        return candiesCollected;
+        return totalCandies;
     }
 }
