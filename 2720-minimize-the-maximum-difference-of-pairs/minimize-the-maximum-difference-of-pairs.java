@@ -1,27 +1,32 @@
 class Solution {
-    public int minimizeMax(int[] A, int p) {
-        int n = A.length;
-        Arrays.sort(A);
-        int l = 0;
-        int r = A[n-1]-A[0];
-        int mid;
-        while(l<r){
-            mid = (l+r)/2;
-            if(helper(A, mid, p)>=p) r = mid;
-            else l = mid +1;
-        }
-        return l;
-    }
-    
-    public int helper(int [] A, int diff, int p){
-        int i = 1; int count = 0;
-        while(i<A.length){
-            if(A[i]-A[i-1]<=diff){
-                i++;
-                count++;
+    public int minimizeMax(int[] nums, int p) {
+        Arrays.sort(nums);
+        int arrayLength = nums.length;
+        int lowerBound = 0, upperBound = nums[arrayLength - 1] - nums[0];
+
+        while (lowerBound < upperBound) {
+            int middle = lowerBound + (upperBound - lowerBound) / 2;
+            // If enough pairs are found, try a smaller difference
+            // Otherwise, try a larger difference
+            if (countValidPairs(nums, middle) >= p) {
+                upperBound = middle;
+            } else {
+                lowerBound = middle + 1;
             }
-            i++;
         }
-        return count;
+        return lowerBound;
+    }
+    // Calculate the count of valid pairs using a greedy strategy
+    private int countValidPairs(int[] nums, int threshold) {
+        int position = 0, pairCount = 0;
+        while (position < nums.length - 1) {
+            // If a valid pair is found, skip both elements
+            if (nums[position + 1] - nums[position] <= threshold) {
+                pairCount++;
+                position++;
+            }
+            position++;
+        }
+        return pairCount;
     }
 }
