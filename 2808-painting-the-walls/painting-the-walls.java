@@ -1,28 +1,29 @@
 class Solution {
-    private long[][] memo;
-    private int n;
+    int[][] memo;
+    int n;
     
     public int paintWalls(int[] cost, int[] time) {
         n = cost.length;
-        memo = new long[n + 1][n + 1];
-        for (long[] row : memo) {
-            Arrays.fill(row, -1);
-        }
-        return (int) dp(0, n, cost, time);
+        memo = new int[n][n + 1];
+        return dp(0, n, cost, time);
     }
     
-    private long dp(int i, int w, int[] cost, int[] time) {
-        if (w <= 0) return 0;
-        if (i == n) return w == 0 ? 0 : Long.MAX_VALUE / 2;
+    public int dp(int i, int remain, int[] cost, int[] time) {
+        if (remain <= 0) {
+            return 0;
+        }
         
-        if (memo[i][w] != -1) return memo[i][w];
+        if (i == n) {
+            return (int) 1e9;
+        }
         
-        long skip = dp(i + 1, w, cost, time);
-        long use = Long.MAX_VALUE / 2;
-        // No need for explicit w >= wallsPainted check, handled by base case
-        int wallsPainted = 1 + time[i];
-        use = cost[i] + dp(i + 1, w - wallsPainted, cost, time);
+        if (memo[i][remain] != 0) {
+            return memo[i][remain];
+        }
         
-        return memo[i][w] = Math.min(skip, use);
+        int paint = cost[i] + dp(i + 1, remain - 1 - time[i], cost, time);
+        int dontPaint = dp(i + 1, remain, cost, time);
+        memo[i][remain] = Math.min(paint, dontPaint);
+        return memo[i][remain];
     }
 }
