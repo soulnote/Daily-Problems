@@ -15,13 +15,23 @@
  */
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        return helper(root, Long.MIN_VALUE, Long.MAX_VALUE);
+        List<Integer> inorderList = new ArrayList<>();
+        inorder(root, inorderList);
+
+        // Check for strictly increasing order
+        for (int i = 1; i < inorderList.size(); i++) {
+            if (inorderList.get(i) <= inorderList.get(i - 1)) {
+                return false;
+            }
+        }
+        return true;
     }
-    public boolean helper(TreeNode root, long low, long high){
-        if(root==null)return true;
-        if (root.val >= high || root.val <= low) return false;
-        boolean leftBalanced = helper(root.left, low, root.val);
-        boolean rightBalanced = helper(root.right , root.val, high);
-        return leftBalanced && rightBalanced;
+    private void inorder(TreeNode node, List<Integer> list) {
+        if (node == null) return;
+
+        inorder(node.left, list);
+        list.add(node.val);
+        inorder(node.right, list);
     }
+
 }
