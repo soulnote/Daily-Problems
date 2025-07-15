@@ -1,28 +1,23 @@
 class Solution {
     public boolean isValid(String word) {
-        if(word.length()<3)return false;
-        boolean isDigit = true, isVowelPresent = false, isConstantPresent = false;
-        for(int i=0;i<word.length();i++){
-            char ch = word.charAt(i);
-            if(!Character.isLetterOrDigit(ch))return false;
-            if(Character.isDigit(ch)){
-                isDigit = true;
-            }
-            if(Character.isLetter(ch)){
-                if(isVowel(ch))isVowelPresent=true;
-                else isConstantPresent=true;
+        if (word.length() < 3) return false;
+
+        int vowels = 0;
+        int consonants = 0;
+
+        for (char ch : word.toCharArray()) {
+            if (!Character.isLetterOrDigit(ch)) return false;
+
+            if (Character.isLetter(ch)) {
+                char lower = Character.toLowerCase(ch);
+                if (lower == 'a' || lower == 'e' || lower == 'i' || lower == 'o' || lower == 'u') {
+                    vowels++;
+                } else {
+                    consonants++;
+                }
             }
         }
-        return isDigit && isVowelPresent && isConstantPresent;
-    }
-    public boolean isVowel(char ch){
-        HashSet<Character> set = new HashSet<>();
-        set.add('a');set.add('A');
-        set.add('e');set.add('E');
-        set.add('o');set.add('O');
-        set.add('i');set.add('I');
-        set.add('u');set.add('U');
-        if(set.contains(ch))return true;
-        return false;
+
+        return vowels > 0 && consonants > 0;
     }
 }
