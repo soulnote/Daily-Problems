@@ -7,10 +7,8 @@ class Solution {
             if(!Character.isLetterOrDigit(ch))return false;
             if(Character.isDigit(ch)){
                 isDigit = true;
-                System.out.println(ch + "is digit");
             }
             if(Character.isLetter(ch)){
-                System.out.println(ch + "is letter");
                 if(isVowel(ch))isVowelPresent=true;
                 else isConstantPresent=true;
             }
