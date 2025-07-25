@@ -13,25 +13,31 @@
  *     }
  * }
  */
+
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        List<Integer> inorderList = new ArrayList<>();
-        inorder(root, inorderList);
+        return isValidBSTHelper(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
 
-        // Check for strictly increasing order
-        for (int i = 1; i < inorderList.size(); i++) {
-            if (inorderList.get(i) <= inorderList.get(i - 1)) {
-                return false;
-            }
+    private boolean isValidBSTHelper(TreeNode node, long minVal, long maxVal) {
+        if (node == null) {
+            return true;
         }
+
+        if (node.val <= minVal || node.val >= maxVal) {
+            return false;
+        }
+
+        boolean isLeftSubtreeValid = isValidBSTHelper(node.left, minVal, node.val);
+        if (!isLeftSubtreeValid) {
+            return false;
+        }
+
+        boolean isRightSubtreeValid = isValidBSTHelper(node.right, node.val, maxVal);
+        if (!isRightSubtreeValid) {
+            return false;
+        }
+
         return true;
     }
-    private void inorder(TreeNode node, List<Integer> list) {
-        if (node == null) return;
-
-        inorder(node.left, list);
-        list.add(node.val);
-        inorder(node.right, list);
-    }
-
 }
