@@ -1,8 +1,7 @@
 class Solution {
 
     public boolean isValidSudoku(char[][] board) {
-        //neetcode solution, slightly modified
-
+    
         //a set of the characters that we have already come across (excluding '.' which denotes an empty space)
         Set<Character> rowSet = null;
         Set<Character> colSet = null;
