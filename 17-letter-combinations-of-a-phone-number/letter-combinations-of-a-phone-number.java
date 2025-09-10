@@ -16,11 +16,12 @@ class Solution {
             ans.add(sb.toString());
             return;
         }
+        int digit = digits.charAt(idx) - '0';
+        for (int i = 0; i < kPad[digit].length(); i++) {
+            sb.append(kPad[digit].charAt(i));
+            solve(idx + 1, digits, sb, kPad, ans); // pass same builder
+            sb.deleteCharAt(sb.length() - 1); // backtrack
 
-        for (int i = 0; i < kPad[digits.charAt(idx) - '0'].length(); i++) {
-            sb.append(kPad[digits.charAt(idx) - '0'].charAt(i));
-            solve(idx + 1, digits, new StringBuilder(sb), kPad, ans); // Create a copy of StringBuilder
-            sb.deleteCharAt(sb.length() - 1);
         }
     }
 }
