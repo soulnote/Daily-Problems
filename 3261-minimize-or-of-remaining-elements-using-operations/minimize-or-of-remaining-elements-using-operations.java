@@ -1,36 +1,28 @@
 class Solution {
     public int minOrAfterOperations(int[] nums, int k) {
-        int mask = 0;
-        // highest bit (29) se lowest bit (0) tak check karte hain
-        for (int bit = 29; bit >= 0; bit--) {
-            mask |= (1 << bit); // ye bit ko mask me include karo
-            if (operationsNeeded(nums, mask) > k) {
-                // agar zyada operations chahiye to ye bit hata do
-                mask ^= (1 << bit);
-            }
-        }
-        // final OR wahi bits honge jo remove nahi ho paye
-        return ((1 << 30) - 1) ^ mask;
-    }
+        int result = 0; // Initialize the result to 0
 
-    private int operationsNeeded(int[] nums, int mask) {
-        int ops = 0, n = nums.length;
-        int i = 0;
+        // Iterate over each bit position from 30 down to 0
+        for (int bit = 30; bit >= 0; bit--) {
+            int segmentCount = 0; // Count of valid segments
+            int currentMask = (1 << 30) - 1; // Initialize with all bits set
+            int target = result | ((1 << bit) - 1); // Target value for the current bit
 
-        while (i < n) {
-            // agar current number ke bits mask se overlap karte hain
-            if ((nums[i] & mask) != 0) {
-                int cur = nums[i];
-                // merge karte jao jab tak overlap clear na ho
-                while (i + 1 < n && ((cur & mask) != 0)) {
-                    cur &= nums[++i];
-                    ops++;
+            // Check if the current bit can be set in the result
+            for (int num : nums) {
+                currentMask &= num; // Perform bitwise AND with the current number
+                if ((currentMask | target) == target) {
+                    segmentCount++; // Increment segment count
+                    currentMask = (1 << 30) - 1; // Reset the mask for the next segment
                 }
-                // agar abhi bhi overlap hai, ek extra operation chahiye
-                if ((cur & mask) != 0) ops++;
             }
-            i++;
+
+            // If the number of segments is greater than 'k', set the current bit in the result
+            if (nums.length - segmentCount > k) {
+                result |= (1 << bit);
+            }
         }
-        return ops;
+
+        return result;
     }
 }
