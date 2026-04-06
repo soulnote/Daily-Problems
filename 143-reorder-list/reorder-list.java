@@ -1,41 +1,41 @@
 class Solution {
+
+    // 🔹 Left pointer (global / class level)
+    // Yeh hamesha list ke start se move karega
+    ListNode left;
+
     public void reorderList(ListNode head) {
-        if(head == null || head.next == null) return;
-
-        // 1. Find middle
-        ListNode slow = head, fast = head;
-        while(fast != null && fast.next != null){
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        // 2. Reverse second half
-        ListNode second = slow.next;
-        slow.next = null;   // split
-        second = reverse(second);
-
-        // 3. Merge two halves
-        ListNode first = head;
-        while(second != null){
-            ListNode temp1 = first.next;
-            ListNode temp2 = second.next;
-
-            first.next = second;
-            second.next = temp1;
-
-            first = temp1;
-            second = temp2;
-        }
+        left = head;          // left ko head pe initialize kiya
+        reorder(head);        // recursion start (right pointer)
     }
 
-    private ListNode reverse(ListNode head){
-        ListNode prev = null;
-        while(head != null){
-            ListNode next = head.next;
-            head.next = prev;
-            prev = head;
-            head = next;
+    private void reorder(ListNode right) {
+
+        // 🔹 Base Case: jab list end ho jaye
+        if (right == null) return;
+
+        // 🔹 Step 1: recursion se last node tak jao
+        reorder(right.next);
+
+        // 🔹 Agar already kaam complete ho gaya ho
+        if (left == null) return;
+
+        // 🔹 Stop Condition:
+        // Case 1: left == right → odd length, middle node
+        // Case 2: left.next == right → even length, pointers cross ho gaye
+        if (left == right || left.next == right) {
+            right.next = null;   // list ko yahin terminate kar do
+            left = null;         // mark done (baaki recursion skip ho jayega)
+            return;
         }
-        return prev;
+
+        // 🔹 Step 2: links reorder karo
+        ListNode nextLeft = left.next;  // left ka next save kar lo
+
+        left.next = right;              // left → right
+        right.next = nextLeft;          // right → nextLeft
+
+        // 🔹 Step 3: left pointer ko aage badhao
+        left = nextLeft;
     }
 }
