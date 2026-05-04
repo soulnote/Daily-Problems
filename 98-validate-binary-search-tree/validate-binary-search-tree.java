@@ -28,16 +28,7 @@ class Solution {
             return false;
         }
 
-        boolean isLeftSubtreeValid = isValidBSTHelper(node.left, minVal, node.val);
-        if (!isLeftSubtreeValid) {
-            return false;
-        }
+        return isValidBSTHelper(node.right, node.val, maxVal) && isValidBSTHelper(node.left, minVal, node.val);
 
-        boolean isRightSubtreeValid = isValidBSTHelper(node.right, node.val, maxVal);
-        if (!isRightSubtreeValid) {
-            return false;
-        }
-
-        return true;
     }
 }
