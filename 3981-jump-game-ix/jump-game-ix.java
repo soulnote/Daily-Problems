@@ -1,39 +1,48 @@
 class Solution {
     public int[] maxValue(int[] nums) {
         int n = nums.length;
-
-        int[] pre = new int[n];
-        int[] suf = new int[n];
-        int[] res = new int[n];
-
-        // prefix max
-        pre[0] = nums[0];
+        int[] ans = new int[n];
+        
+        // First, find connected components using the cut conditions
+        // A cut happens when max of left side <= min of right side
+        
+        // Compute prefix maximums
+        int[] prefixMax = new int[n];
+        prefixMax[0] = nums[0];
         for (int i = 1; i < n; i++) {
-            pre[i] = Math.max(pre[i - 1], nums[i]);
+            prefixMax[i] = Math.max(prefixMax[i - 1], nums[i]);
         }
-
-        // suffix min
-        suf[n - 1] = nums[n - 1];
+        
+        // Compute suffix minimums
+        int[] suffixMin = new int[n];
+        suffixMin[n - 1] = nums[n - 1];
         for (int i = n - 2; i >= 0; i--) {
-            suf[i] = Math.min(suf[i + 1], nums[i]);
+            suffixMin[i] = Math.min(suffixMin[i + 1], nums[i]);
         }
-
-        res[n - 1] = pre[n - 1];
-
-        // build answer
-        for (int i = n - 2; i >= 0; i--) {
-
-            // merge segment
-            if (pre[i] > suf[i + 1]) {
-                res[i] = res[i + 1];
-            }
-
-            // new segment
-            else {
-                res[i] = pre[i];
+        
+        // Find where components are separated
+        // A cut exists at position i if prefixMax[i] <= suffixMin[i + 1]
+        // This means all elements left of i+1 are <= all elements right of i
+        
+        // Process each component
+        int componentStart = 0;
+        for (int i = 0; i < n; i++) {
+            // If this is the end of a component (cut after i)
+            if (i == n - 1 || prefixMax[i] <= suffixMin[i + 1]) {
+                // Current component is from componentStart to i
+                // Find maximum in this component
+                int maxInComponent = prefixMax[i]; // Since prefixMax[i] is max up to i
+                
+                // Assign this maximum to all indices in the component
+                for (int j = componentStart; j <= i; j++) {
+                    ans[j] = maxInComponent;
+                }
+                
+                // Start new component
+                componentStart = i + 1;
             }
         }
-
-        return res;
+        
+        return ans;
     }
 }
