@@ -18,11 +18,9 @@ class Solution {
     }
 
     public void rotate(int toprow, int topcol, int bottomrow, int bottomcol, int[][] grid, int k) {
-        // top 
         List<Integer> list = new ArrayList<>();
         for (int i = toprow, j = topcol; j <= bottomcol; j++) {
             list.add(grid[i][j]);
-            // System.out.println(grid[i][j] + ",");
         }
         for (int i = toprow + 1, j = bottomcol; i <= bottomrow; i++) {
             list.add(grid[i][j]);
@@ -33,7 +31,7 @@ class Solution {
         for (int i = bottomrow - 1, j = topcol; i > toprow; i--) {
             list.add(grid[i][j]);
         }
-        
+
         int count = list.size();
         int effectiveK = k % count;
         int idx = effectiveK;
