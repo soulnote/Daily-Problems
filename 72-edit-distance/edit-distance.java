@@ -4,26 +4,21 @@ class Solution {
         for(int[]num : memo){
             Arrays.fill(num, -1);
         }
-        return helper(0,0, word1, word2, memo);
+        int ops = solve(word1, word2, 0, 0, memo);
+        return ops;
     }
-    public int helper(int idx1, int idx2 , String word1, String word2, int[][]memo){
-        if(idx2 >= word2.length())return word1.length()-idx1;
-        if(idx1 >= word1.length())return word2.length()-idx2;
-
-        if(memo[idx1][idx2]!=-1)return memo[idx1][idx2]; 
-        int ans = 0 ;
-        if(word1.charAt(idx1)== word2.charAt(idx2)){//same char
-            ans = helper(idx1+1, idx2+1, word1, word2, memo);
+    public int solve(String word1, String word2, int i, int j, int[][]memo){
+        if(i>=word1.length())return word2.length() - j;
+        if(j>=word2.length())return word1.length() - i;
+        if(memo[i][j]!=-1)return memo[i][j];
+        if(word1.charAt(i)==word2.charAt(j)){
+            return solve(word1, word2, i+1, j+1, memo);
         }
-        else{
-            //for different chars
-            int replace = 1+helper(idx1+1, idx2+1, word1, word2, memo);
-            int delete = 1+helper(idx1+1, idx2, word1, word2, memo);
-            int insert = 1+helper(idx1, idx2+1, word1, word2, memo);
-            ans = Math.min(Math.min(replace, delete), insert);
-        }
-        
-        
-        return memo[idx1][idx2] = ans;
+        int insert = solve(word1, word2,i, j+1, memo);
+        int replace = solve(word1, word2,i+1, j, memo);
+        int delete = solve(word1, word2, i+1, j+1, memo);
+        int min = 1 + Math.min(insert, Math.min(replace, delete));
+        memo[i][j] = min;
+        return min;
     }
 }
