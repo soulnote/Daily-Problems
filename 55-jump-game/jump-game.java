@@ -1,21 +1,28 @@
 class Solution {
     public boolean canJump(int[] nums) {
-        int n= nums.length;
-        int right = n-1;
-        boolean[]possible = new boolean[n];
-        Arrays.fill(possible, false);
-        possible[n-1] = true;
-        for(int i=n-2;i>=0;i--){
-            int canGoto = nums[i];
-            boolean canGo= false;
-            for(int j=i;j<n && j<i+canGoto+1;j++){
-                if(possible[j]==true){
-                    canGo = true;
-                    break;
-                }
-            }
-            if(canGo)possible[i] = true;
+        int[] visited = new int[nums.length];
+        Arrays.fill(visited, -1);
+        return solve(nums, 0, visited);
+    }
+
+    public boolean solve(int[] nums, int idx, int[] visited) {
+        if (idx >= nums.length) return false;
+        if (idx == nums.length - 1) return true;
+
+        if (visited[idx] != -1) {
+            return visited[idx] == 1;
         }
-        return possible[0];
+
+        int maxJumps = nums[idx];
+
+        for (int i = 1; i <= maxJumps; i++) {
+            if (solve(nums, idx + i, visited)) {
+                visited[idx] = 1;
+                return true;
+            }
+        }
+
+        visited[idx] = 0;
+        return false;
     }
 }
