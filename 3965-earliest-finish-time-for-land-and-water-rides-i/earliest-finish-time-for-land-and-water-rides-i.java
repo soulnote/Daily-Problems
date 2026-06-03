@@ -11,9 +11,7 @@ class Solution {
         }
         int finish2 = Integer.MAX_VALUE;
         for (int i = 0; i < start2.length; i++) {
-            finish2 = Math.min(
-                    finish2,
-                    Math.max(start2[i], finish1) + duration2[i]);
+            finish2 = Math.min(finish2,Math.max(start2[i], finish1) + duration2[i]);
         }
         return finish2;
     }
