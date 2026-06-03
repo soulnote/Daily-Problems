@@ -1,31 +1,38 @@
 class Solution {
-    public int earliestFinishTime(int[] landStartTime, int[] landDuration, int[] waterStartTime, int[] waterDuration) {
-        int min = Integer.MAX_VALUE;
-        
-        // Case 1: Pehle Land Ride, fir Water Ride
-        for (int i = 0; i < landStartTime.length; i++) {
-            int landEndTime = landStartTime[i] + landDuration[i];
-            
-            for (int j = 0; j < waterStartTime.length; j++) {
-                int waterStartTimeActual = Math.max(landEndTime, waterStartTime[j]);
-                int totalTime = waterStartTimeActual + waterDuration[j];
-                
-                min = Math.min(min, totalTime);
-            }
-        }   
-        
-        // Case 2: Pehle Water Ride, fir Land Ride
-        for (int i = 0; i < waterStartTime.length; i++) {
-            int waterEndTime = waterStartTime[i] + waterDuration[i];
-            
-            for (int j = 0; j < landStartTime.length; j++) {
-                int landStartTimeActual = Math.max(waterEndTime, landStartTime[j]);
-                int totalTime = landStartTimeActual + landDuration[j];
-                
-                min = Math.min(min, totalTime);
-            }
-        } 
-        
-        return min;
+
+    private int solve(
+            int[] start1,
+            int[] duration1,
+            int[] start2,
+            int[] duration2) {
+        int finish1 = Integer.MAX_VALUE;
+        for (int i = 0; i < start1.length; i++) {
+            finish1 = Math.min(finish1, start1[i] + duration1[i]);
+        }
+        int finish2 = Integer.MAX_VALUE;
+        for (int i = 0; i < start2.length; i++) {
+            finish2 = Math.min(
+                    finish2,
+                    Math.max(start2[i], finish1) + duration2[i]);
+        }
+        return finish2;
+    }
+
+    public int earliestFinishTime(
+            int[] landStartTime,
+            int[] landDuration,
+            int[] waterStartTime,
+            int[] waterDuration) {
+        int land_water = solve(
+                landStartTime,
+                landDuration,
+                waterStartTime,
+                waterDuration);
+        int water_land = solve(
+                waterStartTime,
+                waterDuration,
+                landStartTime,
+                landDuration);
+        return Math.min(land_water, water_land);
     }
 }
